@@ -1,0 +1,296 @@
+<!-- <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimized Garden Layout</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Background colors for different soil types */
+        .sandy-bg { background-color: #f4a261; }  /* Sandy - Light Brown */
+        .clay-bg { background-color: #a0522d; }   /* Clay - Dark Brown */
+        .loamy-bg { background-color: #8fbc8f; }  /* Loamy - Greenish */
+        .mixed-bg { background-color: #c0c0c0; }  /* Mixed - Greyish */
+        
+        /* Canvas container */
+        .canvas-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Optimized Garden Layout</h2>
+        
+        <!-- Garden Layout Canvas -->
+        <!-- <canvas id="gardenCanvas" width="400" height="300" class="border" class="{{ soil_type }}-bg"></canvas>
+
+        <h3>Selected Soil Type: {{ selected_soil }}</h3>
+<h3>Selected Plants:</h3>
+<ul>
+    {% for plant in selected_plants %}
+        <li>{{ plant }}</li>
+    {% empty %}
+        <li>No plants selected</li>
+    {% endfor %}
+</ul>
+
+        <h3 class="mt-3">Suggested Plants</h3>
+        <ul id="plantList" class="list-group">
+            {% for plant in layout.plants %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ plant }}
+                    <button class="btn btn-danger btn-sm remove-plant">Remove</button>
+                </li>
+            {% endfor %}
+        </ul> 
+
+        <!--  Button to Modify Plants -->
+        <!-- <button id="modifyPlantsBtn" class="btn btn-primary mt-3">Modify Plants</button> -->
+
+         <!-- Plant Selection Modal (Hidden Initially) --> 
+         <!-- <div id="plantSelectionModal" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modify Plants</h5> 
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="newPlant">Select a Plant:</label>
+                        <select id="newPlant" class="form-control">
+                            <option value="Tomato">Tomato</option>
+                            <option value="Carrot">Carrot</option>
+                            <option value="Lettuce">Lettuce</option>
+                            <option value="Basil">Basil</option>
+                            <option value="Pepper">Pepper</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="addPlantBtn" class="btn btn-success">Add Plant</button>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <a href="{% url 'optimize_garden_space' %}" class="btn btn-secondary mt-3">Go Back</a>
+    </div>
+
+    <script> 
+         // Function to draw the garden layout
+        function drawGardenLayout(shape, plants) {
+            var canvas = document.getElementById("gardenCanvas");
+            var ctx = canvas.getContext("2d");
+
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "lightgreen";
+
+            // Draw different shapes based on user input
+            if (shape === "rectangle" || shape === "square") {
+                ctx.fillRect(50, 50, 300, 200);
+            } else if (shape === "circle") {
+                ctx.beginPath();
+                ctx.arc(200, 150, 100, 0, 2 * Math.PI);
+                ctx.fill();
+            } else if (shape === "irregular") {
+                ctx.beginPath();
+                ctx.moveTo(50, 100);
+                ctx.lineTo(200, 50);
+                ctx.lineTo(300, 200);
+                ctx.lineTo(100, 300);
+                ctx.closePath();
+                ctx.fill();
+            }
+
+            // Draw plants as small circles
+            let plantIcons = { "Tomato": "🍅", "Carrot": "🥕", "Lettuce": "🥬", "Basil": "🌿", "Pepper": "🌶️" };
+            let x = 70, y = 80;
+
+            plants.forEach(plant => {
+                ctx.fillStyle = "darkgreen";
+                ctx.font = "20px Arial";
+                ctx.fillText(plantIcons[plant] || "🌱", x, y);
+                x += 50;
+                if (x > 300) {
+                    x = 70;
+                    y += 40;
+                }
+            });
+        }
+
+        // Load initial layout from Django template variables
+        let initialShape = "{{ layout.shape }}";
+        let initialPlants = [{% for plant in layout.plants %} "{{ plant }}", {% endfor %}];
+
+        // Draw the initial garden layout
+        window.onload = function () {
+            drawGardenLayout(initialShape, initialPlants);
+        };
+
+        // Remove plant on button click
+        document.querySelectorAll(".remove-plant").forEach(button => {
+            button.addEventListener("click", function () {
+                this.parentElement.remove();
+            });
+        });
+
+        // Show modal to modify plants
+        document.getElementById("modifyPlantsBtn").addEventListener("click", function () {
+            new bootstrap.Modal(document.getElementById("plantSelectionModal")).show();
+        });
+
+        // Add new plant to the layout
+        document.getElementById("addPlantBtn").addEventListener("click", function () {
+            let selectedPlant = document.getElementById("newPlant").value;
+            let plantList = document.getElementById("plantList");
+
+            // Add plant to list
+            let listItem = document.createElement("li");
+            listItem.className = "list-group-item d-flex justify-content-between align-items-center";
+            listItem.innerHTML = `${selectedPlant} <button class="btn btn-danger btn-sm remove-plant">Remove</button>`;
+            
+            // Add remove functionality
+            listItem.querySelector(".remove-plant").addEventListener("click", function () {
+                this.parentElement.remove();
+            });
+
+            plantList.appendChild(listItem);
+
+            // Update the garden layout with the new plant
+            initialPlants.push(selectedPlant);
+            drawGardenLayout(initialShape, initialPlants);
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html> 
+
+ 
+
+ --> 
+
+
+
+
+ <!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Layout</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+
+        #gardenCanvas {
+            border: 2px solid black;
+        }
+
+        .controls {
+            margin-top: 20px;
+        } -->
+
+        <!-- .plant {
+            cursor: pointer;
+            padding: 5px;
+            background: lightgreen;
+            border-radius: 5px;
+            margin: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body> -->
+
+    <!-- <h2>Your Garden Layout</h2> -->
+
+    <!-- Canvas for Garden Layout -->
+    <!-- <canvas id="gardenCanvas"></canvas> -->
+
+    <!-- Controls for Adding Plants -->
+    <!-- <div class="controls">
+        <h3>Click to Add More Plants</h3>
+        <div id="plantOptions">
+            <button class="plant" onclick="addPlant('Tomato')">Tomato</button>
+            <button class="plant" onclick="addPlant('Lettuce')">Lettuce</button>
+            <button class="plant" onclick="addPlant('Carrot')">Carrot</button>
+            <button class="plant" onclick="addPlant('Peas')">Peas</button>
+        </div>
+    </div> -->
+
+    <!-- <script> -->
+        <!-- // 🟢 Get soil type & selected plants from Django context
+        const soilType = "{{ soil_type }}";
+        const selectedPlants = JSON.parse('{{ selected_plants|safe }}');  // Convert Django list to JavaScript array
+        const gardenShape = "{{ garden_shape }}";  // Assuming user selected shape is passed
+
+        // 🟢 Set canvas background color based on soil type
+        const soilColors = {
+            "sandy": "#f4e1a1",
+            "clay": "#a0522d",
+            "loamy": "#654321",
+            "mixed": "#6b8e23"
+        };
+
+        // 🟢 Setup canvas
+        const canvas = document.getElementById("gardenCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = 600;
+        canvas.height = 400;
+        canvas.style.background = soilColors[soilType] || "#ffffff";  // Default to white if no match
+
+        // 🟢 Function to draw the garden shape
+        function drawGardenShape() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+            ctx.fillStyle = soilColors[soilType];
+
+            if (gardenShape === "circular") {
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, 150, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (gardenShape === "rectangle") {
+                ctx.fillRect(50, 50, 500, 300);
+            }
+        }
+
+        // 🟢 Function to randomly place plants
+        function placePlants(plants) {
+            drawGardenShape();
+            ctx.fillStyle = "green";
+
+            plants.forEach((plant, index) => {
+                let x, y;
+
+                if (gardenShape === "circular") {
+                    let angle = (index / plants.length) * 2 * Math.PI;
+                    x = canvas.width / 2 + Math.cos(angle) * 100;
+                    y = canvas.height / 2 + Math.sin(angle) * 100;
+                } else {
+                    x = 100 + (index % 5) * 100;
+                    y = 100 + Math.floor(index / 5) * 50;
+                }
+
+                ctx.fillText(plant, x, y);
+            });
+        }
+
+        // 🟢 Function to add plants dynamically
+        function addPlant(plantName) {
+            selectedPlants.push(plantName);
+            placePlants(selectedPlants);
+        }
+
+        // 🟢 Initial Render
+        placePlants(selectedPlants);
+
+    </script>
+
+</body>
+</html>
+ --> 
