@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Gardening Chatbot</title>
+    <style>
+        body { font-family: Arial; background: #f0f9f0; padding: 20px; }
+        #chat-box {
+            background: #fff; border-radius: 10px; padding: 15px;
+            height: 400px; overflow-y: auto; border: 1px solid #ccc;
+        }
+        .bot, .user { margin: 10px 0; }
+        .bot { color: green; }
+        .user { text-align: right; color: blue; }
+        #input-form { margin-top: 20px; display: flex; gap: 10px; }
+        input[type=text] {
+            flex: 1; padding: 10px; font-size: 16px;
+        }
+        button {
+            padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 5px;
+        }
+        .option-button {
+            display: inline-block;
+            margin: 5px 5px 0 0;
+            padding: 8px 12px;
+            background: #e0f7e9;
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>🌿 AI Gardening Chatbot</h2>
+
+    <div id="chat-box">
+        <div class="bot">Hello! I'm your Gardening Assistant. How can I help you today?</div>
+        {% for chat in chat_history %}
+            <div class="user">{{ chat.user }}</div>
+            <div class="bot">{{ chat.bot }}</div>
+        {% endfor %}
+    </div>
+
+    <form id="input-form">
+        <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off" required />
+        <input type="hidden" id="current-node" name="current_node" value="root" />
+        <button type="submit">Send</button>
+    </form>
+
+    <script>
+        const form = document.getElementById("input-form");
+        const input = document.getElementById("user-input");
+        const chatBox = document.getElementById("chat-box");
+        const currentNodeInput = document.getElementById("current-node");
+
+        // Function to send a message (for text input or button click)
+        async function sendMessage(userMessage, currentNode) {
+            // Display user message
+            chatBox.innerHTML += `<div class="user">${userMessage}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            const formData = new FormData();
+            formData.append("message", userMessage);
+            formData.append("current_node", currentNode);
+
+            try {
+                const response = await fetch("{% url 'gardening_chatbot' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}",
+                        "X-Requested-With": "XMLHttpRequest"
+                    },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                chatBox.innerHTML += `<div class="bot">${data.bot_reply}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+
+                currentNodeInput.value = data.next_node; // Update current node
+
+                // Clear previous options
+                document.querySelectorAll(".option-button").forEach(btn => btn.remove());
+
+                // If options are returned, display them as buttons
+                if (data.options && Object.keys(data.options).length > 0) {
+                    appendOptions(data.options);
+                }
+            } catch (err) {
+                console.error("Chatbot error:", err);
+                chatBox.innerHTML += `<div class="bot">Oops, something went wrong.</div>`;
+            }
+        }
+
+        // Add options as clickable buttons
+        function appendOptions(options) {
+            for (const [label, node] of Object.entries(options)) {
+                const btn = document.createElement("div");
+                btn.classList.add("option-button");
+                btn.textContent = label;
+                btn.onclick = () => sendMessage(label, node);
+                chatBox.appendChild(btn);
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Handle form submit (text input)
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const userMessage = input.value.trim();
+            if (!userMessage) return;
+
+            const currentNode = currentNodeInput.value;
+            input.value = "";
+            await sendMessage(userMessage, currentNode);
+        });
+    </script>
+</body>
+</html>

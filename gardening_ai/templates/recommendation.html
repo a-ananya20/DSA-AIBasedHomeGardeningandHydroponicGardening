@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Planting Recommendations</title>
+</head>
+<body>
+    <h2>🌱 Get Planting Recommendations</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Soil Type:</label>
+        <select name="soil_types">
+            {% for soil in soil_types %}
+                <option value="{{ soil.id }}">{{ soil.name }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Season:</label>
+        <select name="seasons">
+            {% for season in seasons %}
+                <option value="{{ season.id }}">{{ season.name }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        
+
+        <br><br>
+        <button type="submit">Get Recommendations</button>
+    </form>
+    
+    
+    <hr>
+    {% if selected_soil and selected_season %}
+    <p><strong>Selected Soil Type:</strong> {{ selected_soil }}</p>
+    <p><strong>Selected Season:</strong> {{ selected_season }}</p>
+    <br>
+{% endif %}
+
+    {% if plants %}
+        <h3>Recommended Plants:</h3>
+        <ul>
+            {% for plant in plants %}
+                <li>{{ plant.name }} </li>
+            {% endfor %}
+        </ul>
+    {% elif request.method == 'POST' %}
+        <p>No plants found for the selected soil and season.</p>
+    {% endif %}
+</body>
+</html>

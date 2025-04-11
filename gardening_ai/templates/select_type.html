@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Select Your Garden Type</h2>
+<div class="garden-type-grid">
+  <button onclick="selectGardenType('backyard')">🏡 Backyard Garden</button>
+  <button onclick="selectGardenType('terrace')">🌇 Terrace/Balcony Garden</button>
+  <button onclick="selectGardenType('indoor')">🪴 Indoor Plant Layout</button>
+  <button onclick="selectGardenType('raised')">🌱 Raised Bed Garden</button>
+  <button onclick="selectGardenType('farm')">🌾 Farm-Sized Layout</button>
+</div>
+
+</body>
+<script>
+    function selectGardenType(type) {
+    window.location.href = `/garden/dimensions/${type}/`;
+}
+
+</script>
+</html>

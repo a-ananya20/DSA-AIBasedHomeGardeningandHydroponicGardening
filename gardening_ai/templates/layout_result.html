@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+     
+</head>
+<body>
+    <h2>{{ garden_type|title }} Layout</h2>
+    {% if garden_type == 'raised' %}
+    <!-- Outer container with border for the full layout -->
+    <div style="border: 3px solid #333; padding: 10px; margin: 10px;">
+
+      <!-- Grid layout container -->
+      <div style="
+        display: grid; 
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); 
+        gap: 30px;
+        justify-items: center;
+      ">
+  {% for bed in layout %}
+    <h3> {{ loop.index }}</h3>
+    <table border="1" cellspacing="0" cellpadding="5">
+      {% for row in bed %}
+        <tr>
+          {% for cell in row %}
+            <td style="text-align: center; font-size: 24px;">
+              <span onclick="showMetadata('{{ cell }}')">{{ cell }}</span>
+            </td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+    <br>
+
+  {% endfor %}
+</div>
+</div>
+{% else %}
+  <!-- existing single layout rendering here -->
+   <!-- Table layout -->
+   <table border="1" cellspacing="0" cellpadding="5">
+    {% for row in layout %}
+      <tr>
+        {% for cell in row %}
+          <td style="text-align: center; font-size: 24px;">
+            <span onclick="showMetadata('{{ cell }}')">{{ cell }}</span>
+          </td>
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+
+    
+    
+    <!-- Metadata Modal -->
+    <div id="metadataModal" style="display:none; padding:10px; border:1px solid #aaa; margin-top:20px;">
+      <h3 id="plantName">Plant Name</h3>
+      <p><strong>💧 Water:</strong> <span id="waterNeeds"></span></p>
+      <p><strong>⏳ Growth Duration:</strong> <span id="duration"></span></p>
+      <p><strong>🌿 Planting Date:</strong> <span id="plantDate"></span></p>
+      <p><strong>🌾 Harvesting Date:</strong> <span id="harvestDate"></span></p>
+    </div>
+    
+    <script>
+  
+  const plantData = {
+    // Backyard Garden
+    "🌼": {"name": "Marigold", "water": "Low", "duration": "2 months", "plant": "March", "harvest": "May"},
+    "🌳": {"name": "Neem Tree", "water": "Medium", "duration": "1 year+", "plant": "Anytime", "harvest": "NA"},
+    "🥕": {"name": "Carrot", "water": "Medium", "duration": "3 months", "plant": "Nov", "harvest": "Feb"},
+    "🪴": {"name": "Compost Bin", "water": "N/A", "duration": "Ongoing", "plant": "-", "harvest": "-"},
+    "🚶": {"name": "Walking Path", "water": "-", "duration": "-", "plant": "-", "harvest": "-"},
+
+    // Terrace/Balcony Garden
+    "🌿": { name: "Basil", water: "Moderate", duration: "1 month", plant: "All year", harvest: "30 days" },
+    "🥬": { name: "Spinach", water: "High", duration: "45 days", plant: "Oct-Jan", harvest: "Nov-Feb" },
+    "🌵": { name: "Money Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
+    "🎋": { name: "Vertical Zone", water: "-", duration: "-", plant: "-", harvest: "-" },
+
+    // Indoor Garden Layout
+    "☀️": { name: "Aloe Vera", water: "Low", duration: "3 months", plant: "Year-round", harvest: "Trim as needed" },
+    "🌤️": { name: "Peace Lily", water: "Moderate", duration: "2–3 months", plant: "Anytime", harvest: "-" },
+    "🌑": { name: "Snake Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
+
+"🌱": { name: "Mint/Coriander", water: "Medium", duration: "30–40 days", plant: "Year-round", harvest: "Continuous" },
+"🍅": { name: "Tomato", water: "High", duration: "60–70 days", plant: "Dec–Jan", harvest: "Feb–Mar" },
+"🌶️": { name: "Chilli", water: "Medium", duration: "70 days", plant: "Jan", harvest: "March" },
+"🥦": { name: "Broccoli", water: "Medium", duration: "60–90 days", plant: "Nov", harvest: "Feb" },
+"🌿": { name: "Basil", water: "Moderate", duration: "1 month", plant: "All year", harvest: "30 days" },
+
+
+"🌱": {"name": "Tomato", "water": "Medium", "duration": "70 days", "plant": "Feb", "harvest": "May"},
+    "🍆": {"name": "Brinjal", "water": "Medium", "duration": "80 days", "plant": "Jan", "harvest": "Apr"},
+    "🥕": {"name": "Carrot", "water": "Low", "duration": "90 days", "plant": "Oct", "harvest": "Jan"},
+    "🥬": {"name": "Spinach", "water": "High", "duration": "40 days", "plant": "Nov", "harvest": "Dec"},
+    "🌽": {"name": "Corn", "water": "High", "duration": "100 days", "plant": "Mar", "harvest": "Jun"}
+  };
+
+
+    
+      function showMetadata(icon) {
+        const data = plantData[icon];
+        if (!data) {
+    alert("No data available for this plant/icon.");
+    return;
+  }
+        document.getElementById("metadataModal").style.display = "block";
+        document.getElementById("plantName").innerText = data.name;
+        document.getElementById("waterNeeds").innerText = data.water;
+        document.getElementById("duration").innerText = data.duration;
+        document.getElementById("plantDate").innerText = data.plant;
+        document.getElementById("harvestDate").innerText = data.harvest;
+      }
+    </script>
+    
+
+
+
+</body>
+</html>

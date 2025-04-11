@@ -12,6 +12,16 @@ urlpatterns = [
     path('optimize-garden/',views.optimize_garden,name='optimize_garden'),
     
     path('bfs-planting/',views.bfs_planting,name='bfs_planting'),
+    path('recommend/',views.recommend_plants_smart,name='recommend_plants_smart'), 
+    path('predict/', views.predict_disease, name='predict_disease'),
+    path('chatbot/',views.chatbot_page,name='chatbot_page'),
+    path('chatbot/api/',views.gardening_chatbot,name='gardening_chatbot'),
+     path('garden/', views.garden_type_selection, name='garden_type_selection'),
+    path('garden/dimensions/<str:garden_type>/', views.get_dimensions, name='get_dimensions'),
+    path('generate-layout/', views.generate_layout, name='generate_layout'),
+
+    
+
     
 
 ]

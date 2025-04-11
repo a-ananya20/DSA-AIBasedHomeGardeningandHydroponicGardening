@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Enter Dimensions for: {{ garden_type|title }}</h2>
+
+<form method="POST" action="{% url 'generate_layout' %}">
+  {% csrf_token %}
+  <input type="hidden" name="garden_type" value="{{ garden_type }}">
+
+  {% if garden_type == 'indoor' %}
+    <label>Length (ft):</label><input type="number" name="length" required><br>
+    <label>Width (ft):</label><input type="number" name="width" required><br>
+    <label>Number of Shelves:</label><input type="number" name="shelves" required><br>
+
+  {% elif garden_type == 'raised' %}
+    <label>Number of Beds:</label><input type="number" name="beds" required><br>
+    <label>Length per Bed (ft):</label><input type="number" name="length" required><br>
+    <label>Width per Bed (ft):</label><input type="number" name="width" required><br>
+
+  {% else %}
+    <label>Length (ft):</label><input type="number" name="length" required><br>
+    <label>Width (ft):</label><input type="number" name="width" required><br>
+  {% endif %}
+
+  <button type="submit">Generate Layout</button>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,9 @@
+<h2>Prediction Result</h2>
+<p><strong>Disease Detected:</strong> {{ prediction }}</p>
+<img src="{{ image_url }}" alt="Uploaded leaf" width="200">
+<br>
+<br>
+<h3>Disease Detected: {{ predicted_label }}</h3>
+<p><strong>Natural Prevention Tip:</strong> {{ remedy }}</p>
+
+<a href="{% url 'predict_disease' %}">Try Another</a>

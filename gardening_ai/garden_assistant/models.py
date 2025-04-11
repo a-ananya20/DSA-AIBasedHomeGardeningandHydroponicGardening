@@ -1,10 +1,32 @@
 from django.db import models
 
-class Plant(models.Model):
-    name = models.CharField(max_length=100)
+
+class SoilType(models.Model):
+    name = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         return self.name
+
+
+class Season(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Plant(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    min_temp = models.IntegerField(null=True, blank=True)
+    max_temp = models.IntegerField()
+    
+
+    soil_types = models.ManyToManyField(SoilType, related_name='plants')
+    seasons = models.ManyToManyField(Season, related_name='plants')
+
+    def __str__(self):
+        return self.name
+
 
 class GardenLayout(models.Model):
     SHAPE_CHOICES = [
@@ -17,9 +39,10 @@ class GardenLayout(models.Model):
     selected_plants = models.ManyToManyField(Plant,blank=True)
     length = models.FloatField(null=True, blank=True)
     width = models.FloatField(null=True, blank=True)
-    radius = models.FloatField(null=True, blank=True)
+    
     planting_style = models.CharField(max_length=100)
-    soil_type = models.CharField(max_length=100)
+    soil_type = models.ForeignKey(SoilType, on_delete=models.SET_NULL, null=True)
+
 
     def __str__(self):
         return f"Garden Layout ({self.shape})"
