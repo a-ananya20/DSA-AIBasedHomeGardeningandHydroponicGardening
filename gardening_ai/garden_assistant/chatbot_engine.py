@@ -111,7 +111,7 @@ chatbot_trie.insert("how to keep pests away organically", "Use neem oil, garlic 
 
 
 # 🌿 Final hybrid response engine
-def get_bot_response(user_input, current_node="start"):
+def get_bot_response(user_input, current_node=None):
     user_input = user_input.strip()
 
     # 🔁 Reset
@@ -128,7 +128,6 @@ def get_bot_response(user_input, current_node="start"):
             next_node_key = options[user_input]
             next_node = conversation_graph[next_node_key]
             if "response" in next_node:
-                # Show answer and return to start
                 return next_node["response"], "start", conversation_graph["start"]["options"]
             elif "question" in next_node:
                 return next_node["question"], next_node_key, next_node.get("options", {})
@@ -147,3 +146,16 @@ def get_bot_response(user_input, current_node="start"):
 
     # 🔁 Unknown fallback
     return "Sorry, something went wrong.", "start", conversation_graph["start"]["options"]
+
+
+
+
+
+
+
+
+
+
+
+
+

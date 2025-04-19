@@ -1,42 +1,137 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>AI Gardening Chatbot</title>
+
     <style>
-        body { font-family: Arial; background: #f0f9f0; padding: 20px; }
+        /* Base Reset and Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+            color: #2e7d32;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2e7d32;
+        }
+
         #chat-box {
-            background: #fff; border-radius: 10px; padding: 15px;
-            height: 400px; overflow-y: auto; border: 1px solid #ccc;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            height: 550px; /* Increased height */
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
         }
-        .bot, .user { margin: 10px 0; }
-        .bot { color: green; }
-        .user { text-align: right; color: blue; }
-        #input-form { margin-top: 20px; display: flex; gap: 10px; }
-        input[type=text] {
-            flex: 1; padding: 10px; font-size: 16px;
+
+        .message-container {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border-radius: 8px;
+            max-width: 80%;
+            margin-bottom: 10px;
         }
+
+        .bot {
+            background-color: #e1f5e1;
+            align-self: flex-start;
+            color: #2e7d32;
+        }
+
+        .user {
+            background-color: #4CAF50;
+            color: white;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        #input-form {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
         button {
-            padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 5px;
+            padding: 10px 15px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
         }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        /* Option buttons container */
+        .options-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
         .option-button {
-            display: inline-block;
-            margin: 5px 5px 0 0;
             padding: 8px 12px;
             background: #e0f7e9;
             border: 1px solid #4CAF50;
             border-radius: 6px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .option-button:hover {
+            background-color: #a5d6a7;
         }
     </style>
 </head>
+
 <body>
     <h2>🌿 AI Gardening Chatbot</h2>
 
     <div id="chat-box">
-        <div class="bot">Hello! I'm your Gardening Assistant. How can I help you today?</div>
+        <div class="message-container bot">
+            <div>Hello! I'm your Gardening Assistant. How can I help you today?</div>
+        </div>
         {% for chat in chat_history %}
-            <div class="user">{{ chat.user }}</div>
-            <div class="bot">{{ chat.bot }}</div>
+            <div class="message-container user">{{ chat.user }}</div>
+            <div class="message-container bot">{{ chat.bot }}</div>
         {% endfor %}
     </div>
 
@@ -55,7 +150,10 @@
         // Function to send a message (for text input or button click)
         async function sendMessage(userMessage, currentNode) {
             // Display user message
-            chatBox.innerHTML += `<div class="user">${userMessage}</div>`;
+            const userMessageContainer = document.createElement("div");
+            userMessageContainer.classList.add("message-container", "user");
+            userMessageContainer.textContent = userMessage;
+            chatBox.appendChild(userMessageContainer);
             chatBox.scrollTop = chatBox.scrollHeight;
 
             const formData = new FormData();
@@ -74,37 +172,48 @@
 
                 const data = await response.json();
 
-                chatBox.innerHTML += `<div class="bot">${data.bot_reply}</div>`;
+                const botMessageContainer = document.createElement("div");
+                botMessageContainer.classList.add("message-container", "bot");
+                botMessageContainer.textContent = data.bot_reply;
+                chatBox.appendChild(botMessageContainer);
                 chatBox.scrollTop = chatBox.scrollHeight;
 
-                currentNodeInput.value = data.next_node; // Update current node
+                currentNodeInput.value = data.next_node;
 
                 // Clear previous options
-                document.querySelectorAll(".option-button").forEach(btn => btn.remove());
+                document.querySelectorAll(".options-container").forEach(el => el.remove());
 
-                // If options are returned, display them as buttons
+                // If options are returned, display them
                 if (data.options && Object.keys(data.options).length > 0) {
                     appendOptions(data.options);
                 }
             } catch (err) {
                 console.error("Chatbot error:", err);
-                chatBox.innerHTML += `<div class="bot">Oops, something went wrong.</div>`;
+                const errorContainer = document.createElement("div");
+                errorContainer.classList.add("message-container", "bot");
+                errorContainer.textContent = "Oops, something went wrong.";
+                chatBox.appendChild(errorContainer);
             }
         }
 
-        // Add options as clickable buttons
+        // Add options as clickable buttons inside a wrapper
         function appendOptions(options) {
+            const optionsContainer = document.createElement("div");
+            optionsContainer.classList.add("options-container");
+
             for (const [label, node] of Object.entries(options)) {
                 const btn = document.createElement("div");
                 btn.classList.add("option-button");
                 btn.textContent = label;
                 btn.onclick = () => sendMessage(label, node);
-                chatBox.appendChild(btn);
+                optionsContainer.appendChild(btn);
             }
+
+            chatBox.appendChild(optionsContainer);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        // Handle form submit (text input)
+        // Handle form submit
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const userMessage = input.value.trim();

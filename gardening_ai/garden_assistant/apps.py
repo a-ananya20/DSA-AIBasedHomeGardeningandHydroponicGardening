@@ -47,14 +47,16 @@ class GardenAssistantConfig(AppConfig):
 
     def ready(self):
         from .models import Plant
-        self.recommend_map = {}  # key = (soil_type_name, season_name), value = list of Plant
+        self.recommend_map = {}  # key = (soil_type_name, season_name, garden_type_name)
         self.trie = Trie()
 
         for plant in Plant.objects.all():
             for soil in plant.soil_types.all():
                 for season in plant.seasons.all():
-                    key = (soil.name, season.name)
-                    if key not in self.recommend_map:
-                        self.recommend_map[key] = []
-                    self.recommend_map[key].append(plant)
+                    for garden in plant.garden_types.all():
+                        key = (soil.name, season.name, garden.name)
+                        if key not in self.recommend_map:
+                            self.recommend_map[key] = []
+                        self.recommend_map[key].append(plant)
+
             self.trie.insert(plant.name)

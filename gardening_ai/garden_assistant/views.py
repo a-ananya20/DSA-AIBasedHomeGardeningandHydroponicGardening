@@ -43,17 +43,6 @@ def garden_layout(request):
     })
 
 
-
-
-
-
-        
-        
-
-
-    
-
-
 from django.shortcuts import render
 from .forms import GardenForm
 
@@ -113,31 +102,6 @@ def optimize_garden(request):
 
 
 
-
-class GardenGraph:
-    def __init__(self, length, width):
-        self.length = length
-        self.width = width
-        self.graph = {}
-
-        # Create nodes for each grid cell
-        for i in range(length):
-            for j in range(width):
-                self.graph[(i, j)] = []
-
-        # Connect adjacent nodes
-        for i in range(length):
-            for j in range(width):
-                if i + 1 < length:  # Down
-                    self.graph[(i, j)].append((i + 1, j))
-                if j + 1 < width:  # Right
-                    self.graph[(i, j)].append((i, j + 1))
-
-    def get_graph(self):
-        return self.graph
-
-
-
 from collections import deque
 
 def bfs_planting(graph, start):
@@ -156,6 +120,26 @@ def bfs_planting(graph, start):
                     queue.append(neighbor)
 
     return planting_positions
+
+
+def dfs_planting(graph, start):
+    stack = [start]
+    visited = set()
+    planting_positions = []
+
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.add(node)
+            planting_positions.append(node)
+
+            # Add neighbors in reverse order to maintain similar ordering
+            for neighbor in reversed(graph[node]):
+                if neighbor not in visited:
+                    stack.append(neighbor)
+
+    return planting_positions
+
 
 
 
@@ -182,56 +166,71 @@ from django.shortcuts import render
 from .models import Plant, SoilType, Season
 from django.apps import apps
 
+from .models import SoilType, Season, GardenType  # Make sure GardenType is imported
+from django.apps import apps
+from django.db.models import Q  # Add this at the top of your views.py
+
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Plant, SoilType, Season, GardenType  # Make sure you import all these
 
 def recommend_plants_smart(request):
     soil_types = SoilType.objects.all()
     seasons = Season.objects.all()
+    garden_types = GardenType.objects.all()
+
     plants = []
-    selected_soil_name=""
-    selected_season_name=""
+    selected_soil_name = ""
+    selected_season_name = ""
+    selected_garden_name = ""
+    sunlight = ""  # ✅ Define it safely at the beginning
 
     if request.method == 'POST':
         soil_id = request.POST.get('soil_types')
         season_id = request.POST.get('seasons')
-        prefix = request.POST.get('plant_prefix', '')
-        
-        if soil_id and season_id:
-            soil_name = SoilType.objects.get(id=soil_id).name
-            season_name = Season.objects.get(id=season_id).name
-            selected_soil_name=soil_name
-            selected_season_name=season_name
-            app_config = apps.get_app_config('garden_assistant')
+        garden_id = request.POST.get('garden_types')
 
-            key = (soil_name, season_name)
-            recommended = app_config.recommend_map.get(key, [])
+        filters = Q()
 
-            if prefix:
-                matching_names = set(app_config.trie.search_prefix(prefix))
-                plants = [p for p in recommended if p.name in matching_names]
+        if garden_id:
+            selected_garden = GardenType.objects.get(id=garden_id)
+            selected_garden_name = selected_garden.name.strip().lower()
+
+            if selected_garden_name == "indoor":
+                sunlight = request.POST.get('sunlight', '').strip().lower()
+                
+
+                filters = Q(garden_types__id=garden_id) & Q(is_indoor_friendly=1)
+
+                if sunlight:
+                    sunlight_processed = sunlight.strip().lower()
+                   
+                    plants=Plant.objects.filter(sunlight_requirement__iexact=sunlight_processed)
+
             else:
-                plants = recommended
-    print("SoilTypes:", soil_types)
-    print("Seasons:", seasons)
+                if soil_id:
+                    selected_soil = SoilType.objects.get(id=soil_id)
+                    selected_soil_name = selected_soil.name
+                    filters |= Q(soil_types__id=soil_id)
+
+                if season_id:
+                    selected_season = Season.objects.get(id=season_id)
+                    selected_season_name = selected_season.name
+                    filters |= Q(seasons__id=season_id)
+
+                filters |= Q(garden_types__id=garden_id)
+                plants = Plant.objects.filter(filters).distinct()
 
     return render(request, 'recommendation.html', {
         'soil_types': soil_types,
         'seasons': seasons,
+        'garden_types': garden_types,
         'plants': plants,
-        'selected_soil':selected_soil_name,
-        'selected_season':selected_season_name
+        'sunlight': sunlight,  # ✅ Now it's always defined
+        'selected_soil': selected_soil_name,
+        'selected_season': selected_season_name,
+        'selected_garden': selected_garden_name.capitalize(),
     })
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -287,12 +286,6 @@ def predict_disease(request):
     return render(request, 'predict.html')
 
 
-
-
-
-
-
-
 # garden_assistant/views.py
 
 
@@ -306,59 +299,52 @@ def chatbot_page(request):
     return render(request, 'chatbot.html')
 
 
+
 def gardening_chatbot(request):
-    # Initialize session state
-    if 'current_node' not in request.session:
-        request.session['current_node'] = 'start'
-
-    if 'chat_history' not in request.session:
-        request.session['chat_history'] = []
-
-    if request.method == "POST":
-        user_message = request.POST.get("message")
-        current_node = request.session['current_node']
-
-        # 🔄 Get bot response (you must return options in {label: node} format from get_bot_response)
-        bot_reply, next_node, options = get_bot_response(user_message, current_node)
-
-        # Update current node
-        request.session['current_node'] = next_node
-
-        # Store chat history
-        history = request.session['chat_history']
-        history.append({
-            "user": user_message,
-            "bot": bot_reply,
-            "options": list(options.keys()) if options else []  # just show the labels to frontend
-        })
-        request.session['chat_history'] = history
-
-        # JSON response for frontend
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-            return JsonResponse({
-                "bot_reply": bot_reply,
-                "options": options,  # full {label: node} format
-                "next_node": next_node,
-                "chat_history": request.session['chat_history']
-            })
-
-        # fallback for non-AJAX
-        return render(request, "chatbot.html", {
-            "chat_history": request.session['chat_history']
-        })
-
-    # For GET requests
-    return render(request, "chatbot.html", {
-        "chat_history": request.session.get('chat_history', [])
-    })
-
-
-
-
-
-
-
-
+     # Initialize session state
+     if 'current_node' not in request.session:
+         request.session['current_node'] = 'start'
+ 
+     if 'chat_history' not in request.session:
+         request.session['chat_history'] = []
+ 
+     if request.method == "POST":
+         user_message = request.POST.get("message")
+         current_node = request.session['current_node']
+ 
+         # 🔄 Get bot response (you must return options in {label: node} format from get_bot_response)
+         bot_reply, next_node, options = get_bot_response(user_message, current_node)
+ 
+         # Update current node
+         request.session['current_node'] = next_node
+ 
+         # Store chat history
+         history = request.session['chat_history']
+         history.append({
+             "user": user_message,
+             "bot": bot_reply,
+             "options": list(options.keys()) if options else []  # just show the labels to frontend
+         })
+         request.session['chat_history'] = history
+ 
+         # JSON response for frontend
+         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+             return JsonResponse({
+                 "bot_reply": bot_reply,
+                 "options": options,  # full {label: node} format
+                 "next_node": next_node,
+                 "chat_history": request.session['chat_history']
+             })
+ 
+         # fallback for non-AJAX
+         return render(request, "chatbot.html", {
+             "chat_history": request.session['chat_history']
+         })
+ 
+     # For GET requests
+     return render(request, "chatbot.html", {
+         "chat_history": request.session.get('chat_history', [])
+     })
 
 
 
@@ -412,10 +398,11 @@ def generate_layout(request):
         width = request.POST.get("width")
         shelves = request.POST.get("shelves")
         beds = request.POST.get("beds")
+        algorithm = request.POST.get("algorithm", "bfs") 
+
+        traversal_func = dfs_planting if algorithm == 'dfs' else bfs_planting
+       
         
-
-
-
         if garden_type == 'backyard':
             layout = generate_backyard_layout(int(length), int(width))
         elif garden_type =='terrace':
@@ -423,12 +410,10 @@ def generate_layout(request):
         elif garden_type =='indoor':
             layout = generate_indoor_layout(int(length), int(width),int(shelves))
         elif garden_type =='raised':
-            layout=generate_raised_bed_layout(int(beds),int(length),int(width))
+            layout=generate_raised_bed_layout(int(beds),int(length),int(width),traversal_func)
         elif garden_type == 'farm':
-            layout = generate_farm_layout(int(length), int(width)) 
+            layout = generate_farm_layout(int(length), int(width),traversal_func) 
         
-            
-
         # You can pass all inputs to the next screen (layout screen)
         context = {
             "garden_type": garden_type,
@@ -436,7 +421,8 @@ def generate_layout(request):
             "width": width,
             "shelves": shelves,
             "beds": beds,
-            "layout": layout
+            "layout": layout,
+            "algorithm":algorithm
         }
         return render(request, "layout_result.html", context)
 
@@ -518,28 +504,37 @@ def generate_indoor_layout(length, width, shelves):
 
 import random
 
-def generate_raised_bed_layout(beds, bed_length, bed_width):
+
+
+
+
+def generate_raised_bed_layout(beds, length, width,traversal_func):
     plant_icons = ["🌱", "🍅", "🌶️", "🥦", "🌿"]
     layout = []
+    beds = int(beds)
+    length = int(length)
+    width = int(width)
+
+    
 
     for _ in range(beds):
-         # Step 1: Build graph for this bed
+        # Step 1: Build graph for this bed
         graph = {}
-        for r in range(bed_length):
-            for c in range(bed_width):
+        for r in range(length):
+            for c in range(width):
                 node = (r, c)
                 neighbors = []
                 if r > 0: neighbors.append((r - 1, c))
-                if r < bed_length - 1: neighbors.append((r + 1, c))
+                if r < length - 1: neighbors.append((r + 1, c))
                 if c > 0: neighbors.append((r, c - 1))
-                if c < bed_width - 1: neighbors.append((r, c + 1))
+                if c < width - 1: neighbors.append((r, c + 1))
                 graph[node] = neighbors
 
-        # Step 2: Get BFS planting order for this bed
-        planting_order = bfs_planting(graph, (0, 0))  # Start from top-left corner
-        bed = [[None for _ in range(bed_width)] for _ in range(bed_length)]
+        # Step 2: Get planting order using selected algorithm
+        planting_order = traversal_func(graph, (0, 0))  # Start from top-left corner
+        bed = [[None for _ in range(width)] for _ in range(length)]
 
-        # Step 3: Fill the bed using plant icons in BFS order
+        # Step 3: Fill the bed using plant icons in BFS/DFS order
         icon_index = 0
         for (r, c) in planting_order:
             bed[r][c] = plant_icons[icon_index % len(plant_icons)]
@@ -550,11 +545,15 @@ def generate_raised_bed_layout(beds, bed_length, bed_width):
     return layout
 
 
+
+
 import random
 
-def generate_farm_layout(length, width, plot_size=1):
+def generate_farm_layout(length, width,traversal_func, plot_size=1):
     plant_icons = [
         "🌱",  "🍆", "🥕", "🥬", "🌽"]
+    length = int(length)
+    width = int(width)
 
     rows = length // plot_size
     cols = width // plot_size
@@ -573,7 +572,7 @@ def generate_farm_layout(length, width, plot_size=1):
             graph[node] = neighbors
 
     # Step 2: Get planting order using BFS
-    planting_order = bfs_planting(graph, (0, 0))  # start from top-left corner
+    planting_order = traversal_func(graph, (0, 0))  # start from top-left corner
 
     # Step 3: Fill layout using planting_order
     layout = [[None for _ in range(cols)] for _ in range(rows)]
@@ -584,3 +583,48 @@ def generate_farm_layout(length, width, plot_size=1):
         plant_index += 1
 
     return layout
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+def chat_home(request):
+    """Render the chat interface."""
+    return render(request, 'chat.html')
+
+@csrf_exempt
+def chat_message(request):
+    """Handle incoming chat messages and return bot responses."""
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user_message = data.get('message', '').lower()
+            
+            # Basic response logic - This can be expanded with more sophisticated AI/ML
+            response = get_bot_response(user_message)
+            
+            return JsonResponse({'response': response})
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+def get_bot_responses(message):
+    """Generate bot response based on user input."""
+    # Basic keyword matching - This can be replaced with more sophisticated AI/ML models
+    keywords = {
+        'nutrient': 'For hydroponic nutrients, maintain pH between 5.5-6.5 and EC levels between 1.2-2.0 mS/cm. Essential nutrients include nitrogen, phosphorus, and potassium.',
+        'ph': 'The ideal pH range for most hydroponic plants is between 5.5 and 6.5. Test your water daily and adjust as needed.',
+        'light': 'Most hydroponic plants need 14-16 hours of light daily. LED grow lights are energy-efficient and provide the right spectrum.',
+        'temperature': 'Maintain water temperature between 65-75°F (18-24°C) for optimal nutrient absorption.',
+        'system': 'Common hydroponic systems include Deep Water Culture (DWC), Nutrient Film Technique (NFT), and Ebb and Flow. Each has its advantages.',
+        'plant': 'Good starter plants include lettuce, herbs, and leafy greens. These grow well in hydroponic systems.',
+        'water': 'Use clean, filtered water and change it every 1-2 weeks. Monitor water levels daily.',
+        'problem': 'Common issues include nutrient deficiencies, pH imbalance, and algae growth. Regular monitoring helps prevent these problems.',
+    }
+    
+    for key, response in keywords.items():
+        if key in message:
+            return response
+    
+    return "I can help you with questions about hydroponic nutrients, pH levels, lighting, temperature, system types, plant selection, water management, and common problems. What would you like to know more about?"

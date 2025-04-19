@@ -1,8 +1,115 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Planting Recommendations</title>
+
+    <style>
+        /* Base Reset and Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+            color: #2e7d32;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2e7d32;
+        }
+
+        h3 {
+            text-align: center;
+            color: #2e7d32;
+            font-size: 1.8rem;
+        }
+
+        /* Form Styles */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white; /* Changed form background to white */
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: block;
+            color: #33691e;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #33691e;
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: #a5d6a7; /* Green button background */
+            color: #1b5e20; /* Dark green text */
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #81c784; /* Lighter green on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        /* Styling for recommendations */
+        hr {
+            margin: 30px 0;
+            border: 1px solid #81c784;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #33691e;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #ffffff;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            label, select, button {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
     <h2>🌱 Get Planting Recommendations</h2>
 
@@ -12,7 +119,9 @@
         <label>Soil Type:</label>
         <select name="soil_types">
             {% for soil in soil_types %}
-                <option value="{{ soil.id }}">{{ soil.name }}</option>
+                <option value="{{ soil.id }}" {% if soil.id == selected_soil.id %}selected{% endif %}>
+                    {{ soil.name }}
+                </option>
             {% endfor %}
         </select>
 
@@ -21,35 +130,61 @@
         <label>Season:</label>
         <select name="seasons">
             {% for season in seasons %}
-                <option value="{{ season.id }}">{{ season.name }}</option>
+                <option value="{{ season.id }}" {% if season.id == selected_season.id %}selected{% endif %}>
+                    {{ season.name }}
+                </option>
             {% endfor %}
         </select>
 
         <br><br>
 
-        
+        <label for="garden_types">Garden Type:</label>
+        <select name="garden_types" id="garden_types">
+            {% for garden in garden_types %}
+                <option value="{{ garden.id }}" {% if garden.name == selected_garden %}selected{% endif %}>
+                    {{ garden.name }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label for="sunlight">Sunlight Preference (only for indoor):</label>
+        <select name="sunlight" id="sunlight">
+            <option value="">-- Select --</option>
+            <option value="high" {% if sunlight == 'high' %}selected{% endif %}>High</option>
+            <option value="moderate" {% if sunlight == 'moderate' %}selected{% endif %}>Moderate</option>
+            <option value="low" {% if sunlight == 'low' %}selected{% endif %}>Low</option>
+        </select>
 
         <br><br>
         <button type="submit">Get Recommendations</button>
     </form>
-    
-    
+
     <hr>
-    {% if selected_soil and selected_season %}
-    <p><strong>Selected Soil Type:</strong> {{ selected_soil }}</p>
-    <p><strong>Selected Season:</strong> {{ selected_season }}</p>
-    <br>
-{% endif %}
+
+    {% if selected_soil %}
+        <p><strong>Selected Soil Type:</strong> {{ selected_soil }}</p>
+    {% endif %}
+    {% if selected_season %}
+        <p><strong>Selected Season:</strong> {{ selected_season }}</p>
+    {% endif %}
+    {% if selected_garden %}
+        <p><strong>Selected Garden Type:</strong> {{ selected_garden }}</p>
+    {% endif %}
+    {% if sunlight %}
+        <p><strong>Selected Sunlight Preferred:</strong> {{ sunlight }}</p>
+    {% endif %}
 
     {% if plants %}
         <h3>Recommended Plants:</h3>
         <ul>
             {% for plant in plants %}
-                <li>{{ plant.name }} </li>
+                <li>{{ plant.name }}</li>
             {% endfor %}
         </ul>
     {% elif request.method == 'POST' %}
-        <p>No plants found for the selected soil and season.</p>
+        <p>No plants found for the selected soil, garden type, and season.</p>
     {% endif %}
 </body>
 </html>

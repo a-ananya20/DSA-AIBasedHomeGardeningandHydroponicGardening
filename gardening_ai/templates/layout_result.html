@@ -1,124 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    
-     
-</head>
-<body>
-    <h2>{{ garden_type|title }} Layout</h2>
-    {% if garden_type == 'raised' %}
-    <!-- Outer container with border for the full layout -->
-    <div style="border: 3px solid #333; padding: 10px; margin: 10px;">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Garden Layout</title>
 
-      <!-- Grid layout container -->
-      <div style="
-        display: grid; 
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); 
-        gap: 30px;
-        justify-items: center;
-      ">
-  {% for bed in layout %}
-    <h3> {{ loop.index }}</h3>
-    <table border="1" cellspacing="0" cellpadding="5">
-      {% for row in bed %}
-        <tr>
-          {% for cell in row %}
-            <td style="text-align: center; font-size: 24px;">
+  <style>
+    /* ===== Base Reset and Typography ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+      color: #2e7d32;
+    }
+
+    h3 {
+      text-align: center;
+      color: #558b2f;
+    }
+
+    /* ===== Layout Container for Raised Beds ===== */
+    .layout-container {
+      border: 3px solid #2e7d32;
+      border-radius: 16px;
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 1200px;
+      background-color: #ffffff;
+    }
+
+    .layout-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .layout-grid > div {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+
+    /* ===== Grid Table Styles ===== */
+    table {
+      border-collapse: collapse;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    td {
+      border: 1px solid #c8e6c9;
+      padding: 15px;
+      font-size: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    td:hover {
+      background-color: #dcedc8;
+    }
+
+    /* ===== Metadata Modal for Plant Info ===== */
+    #metadataModal {
+      display: none;
+      background-color: #ffffff;
+      border: 2px solid #66bb6a;
+      border-radius: 8px;
+      padding: 20px;
+      max-width: 400px;
+      margin: 30px auto;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      color: #2e7d32;
+    }
+
+    #metadataModal h3 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    #metadataModal p {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    /* ===== Algorithm Dropdown Styling ===== */
+    #algorithmContainer {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: 1px solid #66bb6a;
+      background-color: #ffffff;
+    }
+
+    /* ===== Fallback Table for Non-Raised Beds ===== */
+    .fallback-table {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .fallback-table td {
+      padding: 15px;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .plant-link {
+      display: inline-block;
+      padding: 10px 15px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .plant-link:hover {
+      background-color: #388E3C;
+    }
+
+    .info-line {
+      font-size: 16px;
+      margin-bottom: 15px;
+      color: #2e7d32;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* ===== Responsive Adjustments ===== */
+    @media (max-width: 600px) {
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      td {
+        font-size: 1.2rem;
+        padding: 10px;
+      }
+
+      #metadataModal {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Heading Based on Garden Type -->
+  <h2>{{ garden_type|title }} Layout</h2>
+  <p class="info-line">🌿 Click on any plant below to view detailed information.</p>
+
+  <!-- Algorithm Dropdown (Visible only for "raised" or "farm" garden types) -->
+  {% if garden_type == 'raised' or garden_type == 'farm' %}
+  <form id="algorithm-form" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="garden_type" value="{{ garden_type }}">
+    <input type="hidden" name="length" value="{{ length }}">
+    <input type="hidden" name="width" value="{{ width }}">
+    <input type="hidden" name="shelves" value="{{ shelves }}">
+    <input type="hidden" name="beds" value="{{ beds }}">
+
+    <label for="algorithm">Select Planting Algorithm:</label>
+    <select name="algorithm" id="algorithm" onchange="document.getElementById('algorithm-form').submit();">
+        <option value="bfs" {% if algorithm == 'bfs' %}selected{% endif %}>BFS</option>
+        <option value="dfs" {% if algorithm == 'dfs' %}selected{% endif %}>DFS</option>
+    </select>
+</form>
+
+  {% endif %}
+  <!-- Raised Bed Layout -->
+  {% if garden_type == 'raised' or garden_type == 'farm' %}
+  <h3>Layout ({{ algorithm|upper }} Traversal)</h3>
+  <p class="info-line">
+    {% if algorithm == 'bfs' %}
+      BFS helps in planning gardens with equal plant exposure.
+    {% elif algorithm == 'dfs' %}
+      DFS helps maximize space in long or narrow areas.
+    {% endif %}
+  </p>
+  <div class="layout-container">
+    <div class="layout-grid">
+      {% for bed in layout %}
+      <div>
+        <h3>{{ loop.index }}</h3>
+        <table>
+          {% for row in bed %}
+          <tr>
+            {% for cell in row %}
+            <td>
               <span onclick="showMetadata('{{ cell }}')">{{ cell }}</span>
             </td>
+            {% endfor %}
+          </tr>
           {% endfor %}
-        </tr>
+        </table>
+      </div>
       {% endfor %}
-    </table>
-    <br>
+    </div>
+  </div>
 
-  {% endfor %}
-</div>
-</div>
-{% else %}
-  <!-- existing single layout rendering here -->
-   <!-- Table layout -->
-   <table border="1" cellspacing="0" cellpadding="5">
+  <!-- Fallback Layout -->
+  {% else %}
+  <table class="fallback-table">
     {% for row in layout %}
-      <tr>
-        {% for cell in row %}
-          <td style="text-align: center; font-size: 24px;">
-            <span onclick="showMetadata('{{ cell }}')">{{ cell }}</span>
-          </td>
-        {% endfor %}
-      </tr>
+    <tr>
+      {% for cell in row %}
+      <td>
+        <span onclick="showMetadata('{{ cell }}')">{{ cell }}</span>
+      </td>
+      {% endfor %}
+    </tr>
     {% endfor %}
   </table>
-{% endif %}
+  {% endif %}
 
-    
-    
-    <!-- Metadata Modal -->
-    <div id="metadataModal" style="display:none; padding:10px; border:1px solid #aaa; margin-top:20px;">
-      <h3 id="plantName">Plant Name</h3>
-      <p><strong>💧 Water:</strong> <span id="waterNeeds"></span></p>
-      <p><strong>⏳ Growth Duration:</strong> <span id="duration"></span></p>
-      <p><strong>🌿 Planting Date:</strong> <span id="plantDate"></span></p>
-      <p><strong>🌾 Harvesting Date:</strong> <span id="harvestDate"></span></p>
-    </div>
-    
-    <script>
-  
-  const plantData = {
-    // Backyard Garden
-    "🌼": {"name": "Marigold", "water": "Low", "duration": "2 months", "plant": "March", "harvest": "May"},
-    "🌳": {"name": "Neem Tree", "water": "Medium", "duration": "1 year+", "plant": "Anytime", "harvest": "NA"},
-    "🥕": {"name": "Carrot", "water": "Medium", "duration": "3 months", "plant": "Nov", "harvest": "Feb"},
-    "🪴": {"name": "Compost Bin", "water": "N/A", "duration": "Ongoing", "plant": "-", "harvest": "-"},
-    "🚶": {"name": "Walking Path", "water": "-", "duration": "-", "plant": "-", "harvest": "-"},
+  <!-- Metadata Modal -->
+  <div id="metadataModal">
+    <h3 id="plantName">Plant Name</h3>
+    <p><strong>💧 Water:</strong> <span id="waterNeeds"></span></p>
+    <p><strong>⏳ Growth Duration:</strong> <span id="duration"></span></p>
+    <p><strong>🌿 Planting Date:</strong> <span id="plantDate"></span></p>
+    <p><strong>🌾 Harvesting Date:</strong> <span id="harvestDate"></span></p>
+  </div>
 
-    // Terrace/Balcony Garden
-    "🌿": { name: "Basil", water: "Moderate", duration: "1 month", plant: "All year", harvest: "30 days" },
-    "🥬": { name: "Spinach", water: "High", duration: "45 days", plant: "Oct-Jan", harvest: "Nov-Feb" },
-    "🌵": { name: "Money Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
-    "🎋": { name: "Vertical Zone", water: "-", duration: "-", plant: "-", harvest: "-" },
-
-    // Indoor Garden Layout
-    "☀️": { name: "Aloe Vera", water: "Low", duration: "3 months", plant: "Year-round", harvest: "Trim as needed" },
-    "🌤️": { name: "Peace Lily", water: "Moderate", duration: "2–3 months", plant: "Anytime", harvest: "-" },
-    "🌑": { name: "Snake Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
-
-"🌱": { name: "Mint/Coriander", water: "Medium", duration: "30–40 days", plant: "Year-round", harvest: "Continuous" },
-"🍅": { name: "Tomato", water: "High", duration: "60–70 days", plant: "Dec–Jan", harvest: "Feb–Mar" },
-"🌶️": { name: "Chilli", water: "Medium", duration: "70 days", plant: "Jan", harvest: "March" },
-"🥦": { name: "Broccoli", water: "Medium", duration: "60–90 days", plant: "Nov", harvest: "Feb" },
-"🌿": { name: "Basil", water: "Moderate", duration: "1 month", plant: "All year", harvest: "30 days" },
+  <a href="{% url 'recommend_plants_smart' %}" class="plant-link">🌿 View Plant Recommendations</a>
 
 
-"🌱": {"name": "Tomato", "water": "Medium", "duration": "70 days", "plant": "Feb", "harvest": "May"},
-    "🍆": {"name": "Brinjal", "water": "Medium", "duration": "80 days", "plant": "Jan", "harvest": "Apr"},
-    "🥕": {"name": "Carrot", "water": "Low", "duration": "90 days", "plant": "Oct", "harvest": "Jan"},
-    "🥬": {"name": "Spinach", "water": "High", "duration": "40 days", "plant": "Nov", "harvest": "Dec"},
-    "🌽": {"name": "Corn", "water": "High", "duration": "100 days", "plant": "Mar", "harvest": "Jun"}
-  };
+  <script>
+    // Plant metadata dictionary
+    const plantData = {
+      "🌼": { name: "Marigold", water: "Low", duration: "2 months", plant: "March", harvest: "May" },
+      "🌳": { name: "Neem Tree", water: "Medium", duration: "1 year+", plant: "Anytime", harvest: "NA" },
+      "🥕": { name: "Carrot", water: "Medium", duration: "3 months", plant: "Nov", harvest: "Feb" },
+      "🪴": { name: "Compost Bin", water: "N/A", duration: "Ongoing", plant: "-", harvest: "-" },
+      "🚶": { name: "Walking Path", water: "-", duration: "-", plant: "-", harvest: "-" },
+      "🌿": { name: "Basil", water: "Moderate", duration: "1 month", plant: "All year", harvest: "30 days" },
+      "🥬": { name: "Spinach", water: "High", duration: "45 days", plant: "Oct-Jan", harvest: "Nov-Feb" },
+      "🌵": { name: "Money Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
+      "🎋": { name: "Vertical Zone", water: "-", duration: "-", plant: "-", harvest: "-" },
+      "☀️": { name: "Aloe Vera", water: "Low", duration: "3 months", plant: "Year-round", harvest: "Trim as needed" },
+      "🌤️": { name: "Peace Lily", water: "Moderate", duration: "2–3 months", plant: "Anytime", harvest: "-" },
+      "🌑": { name: "Snake Plant", water: "Low", duration: "Slow", plant: "Anytime", harvest: "-" },
+      "🌱": { name: "Mint/Coriander", water: "Medium", duration: "30–40 days", plant: "Year-round", harvest: "Continuous" },
+      "🍅": { name: "Tomato", water: "High", duration: "60–70 days", plant: "Dec–Jan", harvest: "Feb–Mar" },
+      "🌶️": { name: "Chilli", water: "Medium", duration: "70 days", plant: "Jan", harvest: "March" },
+      "🥦": { name: "Broccoli", water: "Medium", duration: "60–90 days", plant: "Nov", harvest: "Feb" },
+      "🍆": { name: "Brinjal", water: "Medium", duration: "80 days", plant: "Jan", harvest: "Apr" },
+      "🌽": { name: "Corn", water: "High", duration: "100 days", plant: "Mar", harvest: "Jun" }
+    };
 
-
-    
-      function showMetadata(icon) {
-        const data = plantData[icon];
-        if (!data) {
-    alert("No data available for this plant/icon.");
-    return;
-  }
-        document.getElementById("metadataModal").style.display = "block";
-        document.getElementById("plantName").innerText = data.name;
-        document.getElementById("waterNeeds").innerText = data.water;
-        document.getElementById("duration").innerText = data.duration;
-        document.getElementById("plantDate").innerText = data.plant;
-        document.getElementById("harvestDate").innerText = data.harvest;
+    // Show metadata in modal
+    function showMetadata(icon) {
+      const data = plantData[icon];
+      if (!data) {
+        alert("No data available for this plant/icon.");
+        return;
       }
-    </script>
-    
+
+      document.getElementById("metadataModal").style.display = "block";
+      document.getElementById("plantName").innerText = data.name;
+      document.getElementById("waterNeeds").innerText = data.water;
+      document.getElementById("duration").innerText = data.duration;
+      document.getElementById("plantDate").innerText = data.plant;
+      document.getElementById("harvestDate").innerText = data.harvest;
+    }
+
+   
+ 
+  
+  
+  document.addEventListener("DOMContentLoaded", function () {
+    const algoEl = document.getElementById("algorithm");
+    const algorithmBtn = document.querySelector("button");
+
+    if (algorithmBtn) {
+      algorithmBtn.addEventListener("click", applyAlgorithm);
+    }
+
+    function applyAlgorithm() {
+      const algorithm = algoEl.value;
+
+      if (algorithm === "none") {
+        alert("Please select a valid algorithm.");
+        return;
+      }
+
+      const csrftoken = getCookie('csrftoken');
+
+      fetch("{% url 'generate_layout' %}", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrftoken,
+        },
+        body: new URLSearchParams({
+          algorithm: algorithm,
+          garden_type: "{{ garden_type }}"
+        })
+      })
+      .then(response => response.text())
+      .then(html => {
+        // Replace the current layout with the new one
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const newLayout = doc.querySelector(".layout-container") || doc.querySelector(".fallback-table");
+        const oldLayout = document.querySelector(".layout-container") || document.querySelector(".fallback-table");
+        if (newLayout && oldLayout) {
+          oldLayout.replaceWith(newLayout);
+        } else {
+          alert("Layout could not be updated.");
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("An error occurred while generating layout.");
+      });
+    }
+
+    // CSRF token helper for Django
+    function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + "=")) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  });
 
 
 
+
+  </script>
 </body>
 </html>

@@ -1,9 +1,103 @@
-<h2>Prediction Result</h2>
-<p><strong>Disease Detected:</strong> {{ prediction }}</p>
-<img src="{{ image_url }}" alt="Uploaded leaf" width="200">
-<br>
-<br>
-<h3>Disease Detected: {{ predicted_label }}</h3>
-<p><strong>Natural Prevention Tip:</strong> {{ remedy }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Prediction Result</title>
 
-<a href="{% url 'predict_disease' %}">Try Another</a>
+    <style>
+        /* Base Reset and Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+            color: #2e7d32;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #2e7d32;
+        }
+
+        h3 {
+            text-align: center;
+            color: #558b2f;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #33691e;
+            text-align: center;
+        }
+
+        /* Styling for the Image */
+        img {
+            display: block;
+            margin: 20px auto; /* Added space between the paragraph and the image */
+            border-radius: 8px;
+        }
+
+        /* Link styling */
+        a {
+            display: inline-block;
+            background-color: #a5d6a7; /* Green button background */
+            color: #1b5e20; /* Dark green text */
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 30px; /* Space between content and button */
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #81c784; /* Lighter green on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            p, h3 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h2>🌿 Prediction Result</h2>
+    
+    <p><strong>Disease Detected:</strong> {{ prediction }}</p>
+
+    <img src="{{ image_url }}" alt="Uploaded leaf" width="200">
+
+    <br><br>
+
+    <h3>Disease Detected: {{ predicted_label }}</h3>
+
+    <p><strong>Natural Prevention Tip:</strong> {{ remedy }}</p>
+
+    <a href="{% url 'predict_disease' %}">Try Another</a>
+
+</body>
+</html>

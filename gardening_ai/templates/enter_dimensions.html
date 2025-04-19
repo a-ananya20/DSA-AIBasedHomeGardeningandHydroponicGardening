@@ -1,34 +1,131 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Garden Layout Dimensions</title>
+    <style>
+      /* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body Styling */
+body {
+  background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Title */
+h2 {
+  color: #2e7d32;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Form Container */
+form {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Labels */
+form label {
+  display: block;
+  margin-top: 20px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+/* Inputs */
+form input[type="number"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+form input[type="number"]:focus {
+  outline: none;
+  border-color: #66bb6a;
+}
+
+/* Submit Button */
+form button[type="submit"] {
+  margin-top: 30px;
+  width: 100%;
+  padding: 14px 0;
+  background-color: #a5d6a7;
+  color: #1b5e20;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+form button[type="submit"]:hover {
+  background-color: #81c784;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+    </style>
 </head>
 <body>
     <h2>Enter Dimensions for: {{ garden_type|title }}</h2>
 
-<form method="POST" action="{% url 'generate_layout' %}">
-  {% csrf_token %}
-  <input type="hidden" name="garden_type" value="{{ garden_type }}">
+    <form method="POST" action="{% url 'generate_layout' %}">
+        {% csrf_token %}
+        <input type="hidden" name="garden_type" value="{{ garden_type }}">
 
-  {% if garden_type == 'indoor' %}
-    <label>Length (ft):</label><input type="number" name="length" required><br>
-    <label>Width (ft):</label><input type="number" name="width" required><br>
-    <label>Number of Shelves:</label><input type="number" name="shelves" required><br>
+        {% if garden_type == 'indoor' %}
+            <label for="length">Length (ft):</label>
+            <input type="number" id="length" name="length" required><br>
 
-  {% elif garden_type == 'raised' %}
-    <label>Number of Beds:</label><input type="number" name="beds" required><br>
-    <label>Length per Bed (ft):</label><input type="number" name="length" required><br>
-    <label>Width per Bed (ft):</label><input type="number" name="width" required><br>
+            <label for="width">Width (ft):</label>
+            <input type="number" id="width" name="width" required><br>
 
-  {% else %}
-    <label>Length (ft):</label><input type="number" name="length" required><br>
-    <label>Width (ft):</label><input type="number" name="width" required><br>
-  {% endif %}
+            <label for="shelves">Number of Shelves:</label>
+            <input type="number" id="shelves" name="shelves" required><br>
 
-  <button type="submit">Generate Layout</button>
-</form>
+        {% elif garden_type == 'raised' %}
+            <label for="beds">Number of Beds:</label>
+            <input type="number" id="beds" name="beds" required><br>
 
+            <label for="length">Length per Bed (ft):</label>
+            <input type="number" id="length" name="length" required><br>
+
+            <label for="width">Width per Bed (ft):</label>
+            <input type="number" id="width" name="width" required><br>
+
+        {% else %}
+            <label for="length">Length (ft):</label>
+            <input type="number" id="length" name="length" required><br>
+
+            <label for="width">Width (ft):</label>
+            <input type="number" id="width" name="width" required><br>
+        {% endif %}
+
+        <button type="submit">Generate Layout</button>
+    </form>
 </body>
 </html>
