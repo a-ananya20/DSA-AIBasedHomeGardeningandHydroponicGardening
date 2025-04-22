@@ -3,14 +3,13 @@ from . import views
 
 urlpatterns = [
     
-    path('', views.home, name='home'),
+    path('', views.index, name='index'),
+    path('home/', views.home, name='home'),
+    path('harvesthub/', views.harvesthub, name='harvesthub'),
     path('home-gardening/', views.home_gardening, name='home_gardening'),
     path('hydroponic-gardening/', views.hydroponic_gardening, name='hydroponic_gardening'),
-    path('garden-layout/',views.garden_layout, name='garden_layout'),
-    path('garden-form/',views.garden_form, name='garden_form'),
-    path('optimize-garden-space/',views.optimize_garden_space, name='optimize_garden_space'),
-    path('optimize-garden/',views.optimize_garden,name='optimize_garden'),
-    
+    path('hydroponic-methods/', views.hydroponic_methods, name='hydroponic_methods'),
+    path('hydroponic-layout/', views.hydroponic_layout, name='hydroponic_layout'),
     path('bfs-planting/',views.bfs_planting,name='bfs_planting'),
     path('recommend/',views.recommend_plants_smart,name='recommend_plants_smart'), 
     path('predict/', views.predict_disease, name='predict_disease'),

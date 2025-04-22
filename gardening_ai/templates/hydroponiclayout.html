@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hydroponic Layout</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background-color: #f4f4f4; }
+    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    .image-container { display: flex; gap: 20px; margin-top: 15px; }
+    .image-container img { width: 45%; border-radius: 10px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Hydroponic Method: {{ method|upper }}</h2>
+
+    {% if method == "nft" %}
+      <div class="image-container">
+        <img src="/static/images/NFT-Hydroponic-System.png" alt="NFT Installation">
+    </div>
+    
+      <h3>✅ When to Use:</h3>
+      <p>Best for leafy greens like lettuce, spinach, basil.</p>
+      <h3>🧰 Materials:</h3>
+      <ul>
+        <li>PVC pipes (3–4 inches)</li>
+        <li>Net pots (2–3 inches)</li>
+        <li>Water reservoir</li>
+        <li>Submersible pump</li>
+        <li>Air pump & air stone (optional)</li>
+        <li>Tubing, Nutrient solution, Growing medium</li>
+      </ul>
+      <h3>🛠 Setup Instructions:</h3>
+      <p>Cut holes, tilt pipe, connect pump, insert net pots, etc.</p>
+      <h3>🗺 Layout Suggestion:</h3>
+      <p>Horizontal on stand, slope 2–4%, pump on high end.</p>
+      <div class="image-container"><img src="/static/images/real-nft.jpg" alt="NFT Real View"></div>
+
+    {% elif method == "dwc" %}
+      <div class="image-container">
+        <img src="/static/images/dwc_installation.jpg" alt="DWC Installation">
+        <img src="/static/images/dwc_real.jpg" alt="DWC Real View">
+      </div>
+      <h3>✅ When to Use:</h3>
+      <p>Good for fast-growing plants like lettuce, herbs, tomatoes.</p>
+      <h3>🧰 Materials:</h3>
+      <ul>
+        <li>Plastic container with lid</li>
+        <li>Net pots</li>
+        <li>Air pump with air stones</li>
+        <li>Nutrient solution</li>
+        <li>Growing medium</li>
+      </ul>
+      <h3>🛠 Setup Instructions:</h3>
+      <p>Cut holes in lid, insert net pots, fill with solution, add air stone.</p>
+      <h3>🗺 Layout Suggestion:</h3>
+      <p>Bucket or tub-based setups with lid support for plants.</p>
+
+    {% elif method == "vertical" %}
+      <div class="image-container">
+        <img src="/static/images/vertical_installation.jpg" alt="Vertical System Installation">
+        <img src="/static/images/vertical_real.jpg" alt="Vertical System Real View">
+      </div>
+      <h3>✅ When to Use:</h3>
+      <p>Great for small spaces like balconies.</p>
+      <h3>🧰 Materials:</h3>
+      <ul>
+        <li>Stackable containers or towers</li>
+        <li>Net cups</li>
+        <li>Pump and tubing</li>
+        <li>Reservoir</li>
+        <li>Nutrient solution</li>
+      </ul>
+      <h3>🛠 Setup Instructions:</h3>
+      <p>Connect containers vertically, ensure even water distribution, add support if needed.</p>
+      <h3>🗺 Layout Suggestion:</h3>
+      <p>Vertical tower against a wall or free-standing on the balcony.</p>
+
+    {% elif method == "drip" %}
+      <div class="image-container">
+        <img src="/static/images/drip_installation.jpg" alt="Drip System Installation">
+        <img src="/static/images/drip_real.jpg" alt="Drip System Real View">
+      </div>
+      <h3>✅ When to Use:</h3>
+      <p>Best for larger or fruiting plants like tomatoes, peppers.</p>
+      <h3>🧰 Materials:</h3>
+      <ul>
+        <li>Growing containers</li>
+        <li>Drip emitters</li>
+        <li>Pump and timer</li>
+        <li>Nutrient reservoir</li>
+        <li>Growing medium</li>
+      </ul>
+      <h3>🛠 Setup Instructions:</h3>
+      <p>Connect tubing to timer and emitters, place near plant base, set frequency.</p>
+      <h3>🗺 Layout Suggestion:</h3>
+      <p>Side-by-side containers with centralized reservoir and tubing system.</p>
+
+    {% else %}
+      <p>No valid method selected. <a href="{% url 'methods' %}">Go back</a></p>
+    {% endif %}
+  </div>
+
+</body>
+</html>

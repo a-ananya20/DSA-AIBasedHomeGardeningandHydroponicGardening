@@ -6,13 +6,34 @@ from django.conf import settings
 from django.http import JsonResponse
 import random
 from django.shortcuts import render, redirect
-from .forms import GardenForm
-from .models import GardenLayout
+
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.preprocessing import image
+from django.core.files.storage import FileSystemStorage
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from collections import deque
+from django.db.models import Q
+from django.shortcuts import render
+from .models import Plant, SoilType, Season, GardenType  # Make sure you import all these
+from django.shortcuts import render
+from django.http import JsonResponse
+from .chatbot_engine import get_bot_response
+from django.views.decorators.csrf import csrf_exempt
 
 
 
 def home(request):
     return render(request, 'home.html')
+
+def index(request):
+    return render(request, 'index.html')
+
+def harvesthub(request):
+    return render(request, 'harvesthub.html')
 
 
 def home_gardening(request):
@@ -21,88 +42,19 @@ def home_gardening(request):
 def hydroponic_gardening(request):
     return render(request, 'hydroponic_gardening.html')
 
-def garden_form(request):
-    return render(request,'garden_form.html')
+def hydroponic_methods(request):
+    return render(request, 'hydroponicmethods.html')
+
+def hydroponic_layout(request):
+    method = request.GET.get('method', '').lower()
+    return render(request, 'hydroponiclayout.html', {'method': method})
+
 
 def plant_recommend(request):
     return render(request, 'recommendation.html')
 
-from django.shortcuts import get_object_or_404
-
-# def garden_layout(request, layout_id):
-#     # layout = get_object_or_404(GardenLayout, id=layout_id)
-#     return render(request, 'garden_layout.html', {'layout': layout})
-
-def garden_layout(request):
-    selected_soil = request.session.get("selected_soil", "")
-    recommended_plants = request.session.get("recommended_plants", [])
-
-    return render(request, "garden_layout.html", {
-        "selected_soil": selected_soil,
-        "recommended_plants": recommended_plants
-    })
 
 
-from django.shortcuts import render
-from .forms import GardenForm
-
-def optimize_garden_space(request):
-    recommended_plants = {
-        "sandy": ["Carrots", "Radishes", "Lettuce"],
-        "clay": ["Cabbage", "Broccoli", "Brussels Sprouts"],
-        "loamy": ["Tomatoes", "Peppers", "Cucumbers"],
-        "mixed": ["Spinach", "Peas", "Beans"]
-    }
-
-    if request.method == "POST":
-        
-
-        # Get the selected soil type first
-        soil_type = request.POST.get("soil_type")  # Default to 'sandy' if not provided
-        available_plants = recommended_plants.get(soil_type, [])  # Get plants based on soil type
-
-        # Initialize form with POST data
-        form = GardenForm(request.POST)
-        
-        # ✅ Update the choices for selected_plants before validation
-        form.fields["selected_plants"].choices = [(plant, plant) for plant in available_plants]
-
-        if form.is_valid():
-            selected_plants = form.cleaned_data["selected_plants"]  # Get selected plants
-
-            return render(request, "garden_layout.html", {
-                "selected_plants": selected_plants,
-                "soil_type": soil_type
-            })
-        else:
-            print("❌ Form errors:", form.errors)
-    
-    else:
-        # Default form initialization (GET request)
-        form = GardenForm()
-        form.fields["selected_plants"].choices = [(plant, plant) for plant in recommended_plants[soil_type]]  # Default to 'sandy' plants
-
-    return render(request, "garden_form.html", {"form": form, "recommended_plants": recommended_plants})
-
-
-
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-
-@csrf_exempt
-def optimize_garden(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        length = int(data.get("length"))
-        width = int(data.get("width"))
-        
-        total_area = length * width
-        return JsonResponse({"total_area": total_area})
-
-
-
-from collections import deque
 
 def bfs_planting(graph, start):
     queue = deque([start])
@@ -142,37 +94,6 @@ def dfs_planting(graph, start):
 
 
 
-
-def get_planting_recommendations(area, soil_type, planting_style):
-    plant_options = {
-        "sandy": ["Carrots", "Radishes", "Sweet Potatoes"],
-        "clay": ["Broccoli", "Cabbage", "Pumpkins"],
-        "loamy": ["Tomato", "Peppers", "Beans"],
-        "mixed": ["Lettuce", "Spinach", "Cucumbers"]
-    }
-
-    # Ensure the soil type exists
-    suggested_plants = plant_options.get(soil_type ,[])
-    
-    if not suggested_plants:
-        print("No plants found for this soil type!")
-    return {
-        "suggested_plants": suggested_plants
-    }
-
-
-
-from django.shortcuts import render
-from .models import Plant, SoilType, Season
-from django.apps import apps
-
-from .models import SoilType, Season, GardenType  # Make sure GardenType is imported
-from django.apps import apps
-from django.db.models import Q  # Add this at the top of your views.py
-
-from django.db.models import Q
-from django.shortcuts import render
-from .models import Plant, SoilType, Season, GardenType  # Make sure you import all these
 
 def recommend_plants_smart(request):
     soil_types = SoilType.objects.all()
@@ -234,12 +155,8 @@ def recommend_plants_smart(request):
 
 
 
-import os
-import numpy as np
-import tensorflow as tf
-from tensorflow.keras.preprocessing import image
-from django.shortcuts import render
-from django.core.files.storage import FileSystemStorage
+
+
 
 # Load model once globally
 MODEL_PATH = os.path.join('garden_assistant', 'models', 'plant_disease_model.h5')
@@ -286,14 +203,6 @@ def predict_disease(request):
     return render(request, 'predict.html')
 
 
-# garden_assistant/views.py
-
-
-
-
-from django.shortcuts import render
-from django.http import JsonResponse
-from .chatbot_engine import get_bot_response
 
 def chatbot_page(request):
     return render(request, 'chatbot.html')
@@ -350,37 +259,6 @@ def gardening_chatbot(request):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-from django.shortcuts import render
-
 def garden_type_selection(request):
     return render(request, 'select_type.html')
 
@@ -388,7 +266,6 @@ def get_dimensions(request, garden_type):
     return render(request, 'enter_dimensions.html', {'garden_type': garden_type})
 
 
-from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
 def generate_layout(request):
@@ -502,11 +379,6 @@ def generate_indoor_layout(length, width, shelves):
 
 
 
-import random
-
-
-
-
 
 def generate_raised_bed_layout(beds, length, width,traversal_func):
     plant_icons = ["🌱", "🍅", "🌶️", "🥦", "🌿"]
@@ -547,7 +419,6 @@ def generate_raised_bed_layout(beds, length, width,traversal_func):
 
 
 
-import random
 
 def generate_farm_layout(length, width,traversal_func, plot_size=1):
     plant_icons = [
@@ -584,11 +455,7 @@ def generate_farm_layout(length, width,traversal_func, plot_size=1):
 
     return layout
 
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-
+# chatbot for hydroponic gardening
 def chat_home(request):
     """Render the chat interface."""
     return render(request, 'chat.html')

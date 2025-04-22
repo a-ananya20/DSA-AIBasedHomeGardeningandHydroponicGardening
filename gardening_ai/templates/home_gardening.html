@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Home Gardening Features</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
   <style>
-    /* Base Reset and Body Styling */
+    /* Base Reset */
     * {
       margin: 0;
       padding: 0;
@@ -14,6 +14,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* Body Styling */
     body {
       background: linear-gradient(to right, #e0f7e9, #c8e6c9);
       color: #2e7d32;
@@ -22,11 +23,13 @@
 
     /* Navbar */
     nav.navbar {
+     
       background-color: #2e7d32 !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .navbar-brand {
+     
       font-weight: bold;
       color: white !important;
     }
@@ -49,7 +52,7 @@
       border-radius: 15px;
       padding: 20px;
       transition: transform 0.3s, box-shadow 0.3s;
-      background-color: #f1f8e9;
+      background-color: #a5d6a7; /* updated theme-matching color */
       border: none;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
@@ -60,16 +63,19 @@
     }
 
     .card-title {
-      color: #2e7d32;
+      color: #1b5e20;
       font-weight: 600;
     }
 
     .card-text {
-      color: #33691e;
+      color: #2e7d32;
     }
 
-    /* Buttons - Styled Like First Page */
+    /* Themed Buttons */
     .feature-card a.btn {
+      background: linear-gradient(to right, #e0f7e9, #c8e6c9);
+      color: #1b5e20;
+      border: none;
       border-radius: 12px;
       padding: 12px 18px;
       font-size: 1rem;
@@ -79,6 +85,7 @@
     }
 
     .feature-card a.btn:hover {
+      background-color: #81c784;
       transform: translateY(-4px);
       box-shadow: 0 6px 10px rgba(0,0,0,0.15);
     }
@@ -99,33 +106,33 @@
     <p>Select an option to explore:</p>
 
     <div class="row justify-content-center g-4">
-      <!-- Feature Cards -->
-      <div class="col-md-4">
+      <!-- 2 Cards per Row -->
+      <div class="col-md-6">
         <div class="card feature-card">
           <div class="card-body">
             <h4 class="card-title">📐 Garden Space & Layout Optimization</h4>
             <p class="card-text">Optimize your garden layout using AI and space management.</p>
-            <a href="/garden" class="btn btn-success">Explore</a>
+            <a href="/garden" class="btn">Explore</a>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card feature-card">
           <div class="card-body">
             <h4 class="card-title">🌱 Planting Recommendations</h4>
             <p class="card-text">Get the best plant suggestions based on your soil and climate.</p>
-            <a href="/recommend" class="btn btn-primary">Explore</a>
+            <a href="/recommend" class="btn">Explore</a>
           </div>
         </div>
       </div>
 
-      <div class="col-md-4">
+      <div class="col-md-6">
         <div class="card feature-card">
           <div class="card-body">
             <h4 class="card-title">🦠 Plant Disease Detection</h4>
             <p class="card-text">Upload images to detect plant diseases using AI.</p>
-            <a href="/predict" class="btn btn-danger">Detect</a>
+            <a href="/predict" class="btn">Detect</a>
           </div>
         </div>
       </div>
@@ -135,25 +142,26 @@
           <div class="card-body">
             <h4 class="card-title">🤖 Gardening Chatbot</h4>
             <p class="card-text">Ask AI chatbot for gardening guidance and tips.</p>
-            <a href="/chatbot" class="btn btn-info">Chat Now</a>
+            <a href="/chatbot" class="btn">Chat Now</a>
           </div>
         </div>
       </div>
 
-      <div class="col-md-6">
+      <!-- Uncomment if needed -->
+      <!-- <div class="col-md-6">
         <div class="card feature-card">
           <div class="card-body">
             <h4 class="card-title">📜 Home Gardening Tips</h4>
             <p class="card-text">Get useful tips for sustainable and efficient gardening.</p>
-            <a href="/gardening-tips" class="btn btn-warning">Read Tips</a>
+            <a href="/gardening-tips" class="btn">Read Tips</a>
           </div>
         </div>
-      </div>
+      </div> -->
+
     </div>
   </div>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

@@ -1,11 +1,6 @@
 from django.apps import AppConfig
 
 
-
-
-
-
-
 # Trie implementation
 class TrieNode:
     def __init__(self):
