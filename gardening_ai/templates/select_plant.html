@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydroponic Plant Info</title>
+</head>
+<body>
+    <h1>Select Hydroponic Plant</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="plant">Select Plant:</label>
+        <select name="plant" id="plant">
+            <option value="" disabled selected>Select a plant</option>
+            {% for plant in plants %}
+                <option value="{{ plant.plant }}">{{ plant.plant }}</option>
+            {% endfor %}
+        </select>
+        
+        <label for="method">Select Hydroponic Method:</label>
+        <select name="method" id="method">
+            <option value="" disabled selected>Select a method</option>
+            <option value="NFT">NFT</option>
+            <option value="DWC">DWC</option>
+            <option value="Wick">Wick</option>
+            <option value="Drip">Drip</option>
+            <option value="Vertical">Vertical</option>
+        </select>
+        
+        <button type="submit">Get Plant Info</button>
+    </form>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>

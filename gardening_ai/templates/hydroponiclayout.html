@@ -4,10 +4,43 @@
   <meta charset="UTF-8">
   <title>Hydroponic Layout</title>
   <style>
-    body { font-family: Arial; padding: 20px; background-color: #f4f4f4; }
-    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    .image-container { display: flex; gap: 20px; margin-top: 15px; }
-    .image-container img { width: 45%; border-radius: 10px; object-fit: cover; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+      margin: 0;
+    }
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      text-transform: capitalize;
+    }
+    .image-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 15px 0;
+      justify-content: center;
+    }
+    .image-container img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    ul {
+      padding-left: 20px;
+    }
+    h3 {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
@@ -17,11 +50,12 @@
 
     {% if method == "nft" %}
       <div class="image-container">
-        <img src="/static/images/NFT-Hydroponic-System.png" alt="NFT Installation">
-    </div>
-    
+        <img src="/static/images/NFT-Hydroponic-System - Copy.png" alt="NFT Hydroponic Installation">
+      </div>
+
       <h3>✅ When to Use:</h3>
       <p>Best for leafy greens like lettuce, spinach, basil.</p>
+
       <h3>🧰 Materials:</h3>
       <ul>
         <li>PVC pipes (3–4 inches)</li>
@@ -31,19 +65,25 @@
         <li>Air pump & air stone (optional)</li>
         <li>Tubing, Nutrient solution, Growing medium</li>
       </ul>
+
       <h3>🛠 Setup Instructions:</h3>
       <p>Cut holes, tilt pipe, connect pump, insert net pots, etc.</p>
+
       <h3>🗺 Layout Suggestion:</h3>
       <p>Horizontal on stand, slope 2–4%, pump on high end.</p>
-      <div class="image-container"><img src="/static/images/real-nft.jpg" alt="NFT Real View"></div>
+
+      <div class="image-container">
+        <img src="/static/images/real-nft.jpg" alt="Real NFT System">
+      </div>
 
     {% elif method == "dwc" %}
       <div class="image-container">
-        <img src="/static/images/dwc_installation.jpg" alt="DWC Installation">
-        <img src="/static/images/dwc_real.jpg" alt="DWC Real View">
+        <img src="/static/images/Deep-Water-Culture-System - Copy.jpg" alt="DWC Hydroponic Installation">
       </div>
+
       <h3>✅ When to Use:</h3>
       <p>Good for fast-growing plants like lettuce, herbs, tomatoes.</p>
+
       <h3>🧰 Materials:</h3>
       <ul>
         <li>Plastic container with lid</li>
@@ -52,18 +92,25 @@
         <li>Nutrient solution</li>
         <li>Growing medium</li>
       </ul>
+
       <h3>🛠 Setup Instructions:</h3>
       <p>Cut holes in lid, insert net pots, fill with solution, add air stone.</p>
+
       <h3>🗺 Layout Suggestion:</h3>
       <p>Bucket or tub-based setups with lid support for plants.</p>
 
+      <div class="image-container">
+        <img src="/static/images/real-deep-water-culture.jpg" alt="Real DWC Setup">
+      </div>
+
     {% elif method == "vertical" %}
       <div class="image-container">
-        <img src="/static/images/vertical_installation.jpg" alt="Vertical System Installation">
-        <img src="/static/images/vertical_real.jpg" alt="Vertical System Real View">
+        <img src="/static/images/Vertical-Gardenhydroponic-.jpg" alt="Vertical Hydroponic Setup">
       </div>
+
       <h3>✅ When to Use:</h3>
       <p>Great for small spaces like balconies.</p>
+
       <h3>🧰 Materials:</h3>
       <ul>
         <li>Stackable containers or towers</li>
@@ -72,18 +119,25 @@
         <li>Reservoir</li>
         <li>Nutrient solution</li>
       </ul>
+
       <h3>🛠 Setup Instructions:</h3>
       <p>Connect containers vertically, ensure even water distribution, add support if needed.</p>
+
       <h3>🗺 Layout Suggestion:</h3>
       <p>Vertical tower against a wall or free-standing on the balcony.</p>
 
+      <div class="image-container">
+        <img src="/static/images/real-vertical-hydroponic-tower.jpg" alt="Real Vertical System">
+      </div>
+
     {% elif method == "drip" %}
       <div class="image-container">
-        <img src="/static/images/drip_installation.jpg" alt="Drip System Installation">
-        <img src="/static/images/drip_real.jpg" alt="Drip System Real View">
+        <img src="/static/images/Drip-System - Copy.jpg" alt="Drip Hydroponic Setup">
       </div>
+
       <h3>✅ When to Use:</h3>
       <p>Best for larger or fruiting plants like tomatoes, peppers.</p>
+
       <h3>🧰 Materials:</h3>
       <ul>
         <li>Growing containers</li>
@@ -92,13 +146,19 @@
         <li>Nutrient reservoir</li>
         <li>Growing medium</li>
       </ul>
+
       <h3>🛠 Setup Instructions:</h3>
       <p>Connect tubing to timer and emitters, place near plant base, set frequency.</p>
+
       <h3>🗺 Layout Suggestion:</h3>
       <p>Side-by-side containers with centralized reservoir and tubing system.</p>
 
+      <!-- <div class="image-container">
+        <img src="/static/images/drip_real.jpg" alt="Real Drip System View">
+      </div> -->
+
     {% else %}
-      <p>No valid method selected. <a href="{% url 'methods' %}">Go back</a></p>
+      <p><strong>⚠️ Invalid hydroponic method selected. Please choose a valid method like <em>nft</em>, <em>dwc</em>, <em>vertical</em>, or <em>drip</em>.</strong></p>
     {% endif %}
   </div>
 

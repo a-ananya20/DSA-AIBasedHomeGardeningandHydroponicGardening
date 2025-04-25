@@ -45,9 +45,275 @@ def hydroponic_gardening(request):
 def hydroponic_methods(request):
     return render(request, 'hydroponicmethods.html')
 
+def select_type_hydroponic(request):
+    return render(request, 'select-typehydroponic.html')
+
+def select_details_hydroponic(request):
+    space_type=request.GET.get('space')
+    return render(request, 'select-detailshydroponic.html',{'space':space_type})
+
 def hydroponic_layout(request):
     method = request.GET.get('method', '').lower()
     return render(request, 'hydroponiclayout.html', {'method': method})
+
+
+
+def hydroponic_layout_result(request):
+    space = request.GET.get('space')
+    size = request.GET.get('size')
+    sunlight = request.GET.get('sunlight')
+
+    # Normalize for matching
+    space = space.lower() if space else ''
+    size = size.lower() if size else ''
+    sunlight = sunlight.lower() if sunlight else ''
+
+    # Default fallback
+    methods = ['DWC']
+    reason = "Great for testing hydroponics with minimal space and light requirements."
+    tip = "Ideal when you're unsure about sunlight or working with tight/indoor spaces."
+    guide_url = '/hydroponic-layout/?method=dwc'
+
+    # Recommendation Table Logic
+    if space == 'balcony':
+        if size == 'small':
+            if sunlight == 'full sun':
+                methods = ['Vertical Hydroponics']
+                reason = 'Uses vertical space well and takes full advantage of sunlight.'
+                tip = 'Perfect for growing herbs or leafy greens in a compact sunny balcony.'
+                guide_url = '/hydroponic-layout/?method=vertical'
+            elif sunlight == 'partial':
+                methods = ['Vertical Hydroponics']
+                reason = 'Compact setup with potential artificial lighting.'
+                tip = 'Add grow lights for better yield if sunlight is inconsistent.'
+                guide_url = '/hydroponic-layout/?method=vertical'
+        elif size == 'medium':
+            if sunlight == 'full sun':
+                methods = ['NFT']
+                reason = 'Can accommodate longer NFT pipes with vertical setups.'
+                tip = 'Great for leafy greens and herbs.'
+                guide_url = '/hydroponic-layout/?method=nft'
+            elif sunlight == 'low':
+                methods = ['DWC']
+                reason = 'Low light? Use vertical shelves with LED lights.'
+                tip = 'Grow herbs or lettuce using grow lights.'
+                guide_url = '/hydroponic-layout/?method=dwc'
+
+    elif space == 'rooftop':
+        if sunlight == 'full sun':
+            methods = ['Drip System']
+            reason = 'Plenty of sunlight and space makes it perfect for all systems.'
+            tip = 'Try tomatoes, cucumbers, or leafy greens.'
+            guide_url = '/hydroponic-layout/?method=drip'
+        elif sunlight == 'partial':
+            methods = ['Drip System']
+            reason = 'Partial shade? Drip and NFT still work with minor modifications.'
+            tip = 'Cover with netting or partial shade cloth.'
+            guide_url = '/hydroponic-layout/?method=drip'
+
+    elif space == 'kitchen corner':
+        if size in ['small', 'medium'] and sunlight in ['low', 'partial']:
+            methods = ['DWC']
+            reason = 'Indoors: DWC fits on shelves, vertical saves space.'
+            tip = 'Perfect for growing kitchen herbs with LED lighting.'
+            guide_url = '/hydroponic-layout/?method=dwc'
+
+    elif space == 'indoor room':
+        if size in ['small', 'medium'] and sunlight == 'low':
+            methods = ['DWC']
+            reason = 'Great for small indoor rooms with artificial lighting.'
+            tip = 'Lettuce, basil, and other herbs grow well indoors.'
+            guide_url = '/hydroponic-layout/?method=dwc'
+        elif size == 'large' and sunlight in ['low', 'partial']:
+            methods = [ 'NFT']
+            reason = 'Larger space allows rows of NFT channels, add grow lights.'
+            tip = 'Install full-spectrum lights for best yield indoors.'
+            guide_url = '/hydroponic-layout/?method=nft'
+
+    elif space == 'backyard':
+        if size in ['medium', 'large']:
+            if sunlight == 'full sun':
+                methods = ['Drip System']
+                reason = 'Great for larger fruits and vegetables.'
+                tip = 'Use for tomatoes, cucumbers, and more.'
+                guide_url = '/hydroponic-layout/?method=drip'
+            elif sunlight == 'partial':
+                methods = [ 'NFT']
+                reason = 'Ideal for partial shade crops like lettuce and spinach.'
+                tip = 'Add shade netting if needed.'
+                guide_url = '/hydroponic-layout/?method=nft'
+            elif sunlight == 'low':
+                methods = ['DWC']
+                reason = 'Use grow lights and shade-tolerant crops.'
+                tip = 'Lettuces, herbs, and spinach do well here.'
+                guide_url = '/hydroponic-layout/?method=dwc'
+
+    return render(request, 'hydroponic-layout-result.html', {
+        'methods': methods,
+        'reason': reason,
+        'tip': tip,
+        'guide_url': guide_url
+    })
+
+
+
+import json
+import os
+from django.shortcuts import render
+from django.conf import settings
+
+
+
+# Updated function to get plant recommendations based on method and sunlight
+# def get_plant_recommendations_hydroponic(method: str, sunlight: str) -> list:
+#     # Convert method and sunlight to lowercase for consistency
+#     method = method.lower()
+#     sunlight = sunlight.lower()
+
+#     # Load plant data from the JSON file
+#     plants_data = load_plant_data()
+
+#     recommendations = []
+
+#     # Debug: Print the method and sunlight values being processed
+#     print(f"Filtering for Method: {method}, Sunlight: {sunlight}")
+    
+#     # Loop through all plants in the JSON data
+#     for plant in plants_data:
+#         print(f"Checking plant: {plant['plant']} with methods: {plant['method']} and sunlight: {plant.get('sunlight', [])}")
+#         # Check if the plant supports the selected method and sunlight
+#         if method in plant['method'] and sunlight in plant.get('sunlight', []):
+#             recommendations.append(plant['plant'])
+
+#     # Debug: Print final recommendations
+#     print(f"Recommendations: {recommendations}")
+
+#     return recommendations
+
+
+
+
+# # View function to display the recommendations
+# def plant_recommendation_hydroponic(request):
+#     method = request.GET.get('method', 'nft')         # default: nft
+#     sunlight = request.GET.get('sunlight', 'full')    # default: full
+
+#     recommended_plants = get_plant_recommendations_hydroponic(method, sunlight)
+
+#     return render(request, 'plant-recommendations-hydroponic.html', {
+#         'method': method,
+#         'sunlight': sunlight,
+#         'recommended_plants': recommended_plants,
+#     })
+
+
+
+
+
+
+import json
+from django.shortcuts import render
+
+def plant_recommendation(request):
+    # Get the selected method and sunlight from the GET parameters
+    method = request.GET.get('method', '').lower()
+    sunlight = request.GET.get('sunlight', '').lower()
+
+    # Load plant data from the JSON file
+    plants_data = load_plant_data()
+
+    # Filter plants based on the selected method and sunlight
+    recommended_plants = [
+        plant["plant"]
+        for plant in plants_data
+        if method in (m.lower() for m in plant["method"]) and sunlight in (s.lower() for s in plant["sunlight"])
+    ]
+    
+    # Pass the filtered list to the template
+    return render(request, 'plant-recommendations-hydroponic.html', {
+        'method': method,
+        'sunlight': sunlight,
+        'recommended_plants': recommended_plants
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import json
+from django.shortcuts import render
+
+# Load the JSON data from the file
+def load_plant_data():
+    # Get the absolute path to the file in the project directory
+    file_path = os.path.join(settings.BASE_DIR, 'static', 'hydroponicPlantNutrients.json')
+
+
+    # Check if the file exists
+    if os.path.exists(file_path):
+        with open(file_path, 'r') as file:
+            return json.load(file)
+    else:
+        raise FileNotFoundError(f"File not found: {file_path}")
+
+def plant_info(request):
+    plants_data = load_plant_data()  # Load data from JSON file
+    
+    if request.method == 'POST':
+        selected_plant = request.POST.get('plant')
+        selected_method = request.POST.get('method')
+        
+        # Find the selected plant in the data
+        plant = next((p for p in plants_data if p['plant'] == selected_plant), None)
+
+        # If plant exists, check if the method is available for that plant
+        if plant and selected_method in plant['method']:
+            context = {
+                'plant': plant,
+                'method': selected_method,
+                'nutrients': plant['nutrients'],
+            }
+        else:
+            context = {
+                'error': 'This plant does not grow well in the selected method.'
+            }
+        
+        return render(request, 'plant_info.html', context)
+
+    return render(request, 'select_plant.html', {'plants': plants_data})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def plant_recommend(request):
@@ -455,43 +721,46 @@ def generate_farm_layout(length, width,traversal_func, plot_size=1):
 
     return layout
 
-# chatbot for hydroponic gardening
+
+
+
+
+
+
+
+
+
+
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.shortcuts import render
+import json
+
+from .hydroponic_chatbot_engine import get_bot_responses
+
+# Holds the current node for each session/user — can be made session-based
+current_node = "start"
+
 def chat_home(request):
-    """Render the chat interface."""
     return render(request, 'chat.html')
 
 @csrf_exempt
 def chat_message(request):
-    """Handle incoming chat messages and return bot responses."""
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
             user_message = data.get('message', '').lower()
-            
-            # Basic response logic - This can be expanded with more sophisticated AI/ML
-            response = get_bot_response(user_message)
-            
-            return JsonResponse({'response': response})
+            current_node = data.get('current_node', 'start')
+
+            response_text, new_node, options = get_bot_responses(user_message, current_node)
+
+            return JsonResponse({
+                'response': response_text,
+                'current_node': new_node,
+                'options': options
+            })
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-def get_bot_responses(message):
-    """Generate bot response based on user input."""
-    # Basic keyword matching - This can be replaced with more sophisticated AI/ML models
-    keywords = {
-        'nutrient': 'For hydroponic nutrients, maintain pH between 5.5-6.5 and EC levels between 1.2-2.0 mS/cm. Essential nutrients include nitrogen, phosphorus, and potassium.',
-        'ph': 'The ideal pH range for most hydroponic plants is between 5.5 and 6.5. Test your water daily and adjust as needed.',
-        'light': 'Most hydroponic plants need 14-16 hours of light daily. LED grow lights are energy-efficient and provide the right spectrum.',
-        'temperature': 'Maintain water temperature between 65-75°F (18-24°C) for optimal nutrient absorption.',
-        'system': 'Common hydroponic systems include Deep Water Culture (DWC), Nutrient Film Technique (NFT), and Ebb and Flow. Each has its advantages.',
-        'plant': 'Good starter plants include lettuce, herbs, and leafy greens. These grow well in hydroponic systems.',
-        'water': 'Use clean, filtered water and change it every 1-2 weeks. Monitor water levels daily.',
-        'problem': 'Common issues include nutrient deficiencies, pH imbalance, and algae growth. Regular monitoring helps prevent these problems.',
-    }
-    
-    for key, response in keywords.items():
-        if key in message:
-            return response
-    
-    return "I can help you with questions about hydroponic nutrients, pH levels, lighting, temperature, system types, plant selection, water management, and common problems. What would you like to know more about?"

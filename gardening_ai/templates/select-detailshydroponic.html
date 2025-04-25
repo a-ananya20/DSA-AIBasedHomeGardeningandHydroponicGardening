@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Space Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f4f9f9;
+    }
+    h2 {
+      text-align: center;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+    select, input[type="radio"] {
+      margin-top: 5px;
+    }
+    .radio-group {
+      margin-top: 10px;
+    }
+    .radio-group label {
+      font-weight: normal;
+    }
+    .submit-btn {
+      margin-top: 25px;
+      background-color: #2e937a;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <h2>Tell Us About Your Space</h2>
+  <div class="form-container">
+    <p id="selected-space"></p>
+
+    <label for="dimension">Select Dimensions:</label>
+    <select id="dimension">
+      <option value="Small">< 3 ft (Small)</option>
+      <option value="Medium">3–6 ft (Medium)</option>
+      <option value="Large">> 6 ft (Large)</option>
+    </select>
+
+    <label>Sunlight Availability:</label>
+    <div class="radio-group">
+      <label><input type="radio" name="sunlight" value="Full Sun"> Full Sun (6+ hrs)</label><br>
+      <label><input type="radio" name="sunlight" value="Partial"> Partial (3–6 hrs)</label><br>
+      <label><input type="radio" name="sunlight" value="Low"> Low (< 3 hrs)</label>
+    </div>
+
+    <button class="submit-btn" onclick="submitForm()">Submit</button>
+  </div>
+
+  <script>
+    // Read URL param and display selected space
+    const params = new URLSearchParams(window.location.search);
+    const spaceType = params.get("space");
+    document.getElementById("selected-space").innerText = `Selected Space: ${spaceType}`;
+
+    function submitForm() {
+      const dimension = document.getElementById("dimension").value;
+      const sunlight = document.querySelector('input[name="sunlight"]:checked');
+      if (!sunlight) {
+        alert("Please select sunlight availability.");
+        return;
+      }
+
+     
+
+      const sunlightValue = sunlight.value;
+
+    // Redirect to layout result page with parameters
+    const redirectUrl = `/hydroponic-layout-result/?space=${encodeURIComponent(spaceType)}&size=${encodeURIComponent(dimension)}&sunlight=${encodeURIComponent(sunlightValue)}`;
+    window.location.href = redirectUrl;
+    }
+  </script>
+</body>
+</html>

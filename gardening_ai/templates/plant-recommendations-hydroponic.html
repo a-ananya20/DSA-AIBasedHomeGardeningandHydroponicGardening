@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Recommendations for Hydroponics</title>
+</head>
+<body>
+    <h1>Hydroponic Plant Recommendations</h1>
+
+    <form method="GET" action="{% url 'plant_recommendation' %}">
+        <label for="method">Hydroponic Method:</label>
+        <select id="method" name="method">
+            <option value="NFT" {% if method == 'NFT' %}selected{% endif %}>NFT</option>
+            <option value="DWC" {% if method == 'DWC' %}selected{% endif %}>DWC</option>
+            <option value="VERTICAL" {% if method == 'VERTICAL' %}selected{% endif %}>Vertical</option>
+            <option value="DRIP" {% if method == 'DRIP' %}selected{% endif %}>Drip</option>
+        </select>
+
+        <label for="sunlight">Sunlight:</label>
+        <select id="sunlight" name="sunlight">
+            <option value="full" {% if sunlight == 'full' %}selected{% endif %}>Full Sun</option>
+            <option value="partial" {% if sunlight == 'partial' %}selected{% endif %}>Partial Sun</option>
+            
+        </select>
+
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    <h2>Recommended Plants for {{ method|capfirst }} Method and {{ sunlight|capfirst }} Sunlight:</h2>
+    
+    {% if recommended_plants %}
+        <ul>
+        {% for plant in recommended_plants %}
+            <li>{{ plant }}</li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No recommendations available for the selected options.</p>
+    {% endif %}
+</body>
+</html>

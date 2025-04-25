@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hydroponic Recommendation</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background-color: #f0f9ff; }
+    .result-box {
+      background: white; padding: 30px; border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+      max-width: 600px; margin: auto;
+    }
+    .result-box h2 { color: #4caf50; }
+    .tip-box {
+      margin-top: 20px;
+      background: #e8f5e9;
+      padding: 15px;
+      border-left: 5px solid #4caf50;
+      border-radius: 8px;
+    }
+    .guide-link {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 10px 15px;
+      background: #2196f3;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="result-box">
+    <h2>✅ Your Best Hydroponic Match: {{ methods }}</h2>
+    <p><strong>Why this method?</strong> {{ reason }}</p>
+
+    <div class="tip-box">
+      <strong>💡 Tip:</strong> {{ tip }}
+    </div>
+
+    <a class="guide-link" href="{{ guide_url }}">🔍 Learn more about {{ method }}</a>
+  </div>
+</body>
+</html>

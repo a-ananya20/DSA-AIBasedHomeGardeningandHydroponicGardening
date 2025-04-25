@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatForm = document.getElementById('chat-form');
     const chatMessages = document.getElementById('chat-messages');
     const userInput = document.getElementById('user-input');
+    let currentNode = 'start';
 
     // Function to create a message element
     function createMessageElement(message, isBot = false) {
@@ -40,16 +41,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Function to get bot response
-    async function getBotResponse(message) {
+    // Function to display bot message and options
+    function displayBotMessage(response, options = {}) {
+        addMessage(response, true);
+
+        if (options && Object.keys(options).length > 0) {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-buttons';
+
+            Object.entries(options).forEach(([text, key]) => {
+                const button = document.createElement('button');
+                button.innerText = text;
+                button.className = 'option-btn';
+                button.onclick = () => {
+                    addMessage(text, false);
+                    sendMessage(text);
+                };
+                optionsDiv.appendChild(button);
+            });
+
+            chatMessages.appendChild(optionsDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+
+    // Function to send message to the server
+    async function sendMessage(message) {
+        showTypingIndicator();
+
         try {
-            const response = await fetch('/chat/message/', {
+            const response = await fetch('/chat-message/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
                 },
-                body: JSON.stringify({ message: message })
+                body: JSON.stringify({ message: message, current_node: currentNode })
             });
 
             if (!response.ok) {
@@ -57,35 +84,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const data = await response.json();
-            return data.response;
+            removeTypingIndicator();
+            displayBotMessage(data.response, data.options);
+            currentNode = data.current_node;
         } catch (error) {
             console.error('Error:', error);
-            return 'Sorry, I encountered an error. Please try again.';
+            removeTypingIndicator();
+            addMessage('Sorry, I encountered an error. Please try again.', true);
         }
     }
 
     // Handle form submission
-    chatForm.addEventListener('submit', async (e) => {
+    chatForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
+
         const message = userInput.value.trim();
         if (!message) return;
 
-        // Add user message
         addMessage(message, false);
         userInput.value = '';
-
-        // Show typing indicator
-        showTypingIndicator();
-
-        // Get and display bot response
-        const botResponse = await getBotResponse(message);
-        removeTypingIndicator();
-        addMessage(botResponse, true);
+        sendMessage(message);
     });
 
     // Add initial greeting
     setTimeout(() => {
-        addMessage("Hello! I'm your hydroponic gardening assistant. How can I help you today?", true);
+        displayBotMessage("Hello! I'm your hydroponic gardening assistant. How can I help you today?", {});
     }, 500);
-}); 
+});

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ plant.plant }} - Hydroponic Info</title>
+</head>
+<body>
+    <h1>{{ plant.plant }} - {{ method }} Method</h1>
+    
+    <p><strong>Growth Stage:</strong> {{ plant.stage }}</p>
+
+    <h2>Nutrient Requirements:</h2>
+    <ul>
+        <li><strong>Nitrogen (N):</strong> {{ nutrients.N }} ppm</li>
+        <li><strong>Phosphorus (P):</strong> {{ nutrients.P }} ppm</li>
+        <li><strong>Potassium (K):</strong> {{ nutrients.K }} ppm</li>
+        <li><strong>Calcium (Ca):</strong> {{ nutrients.Ca }} ppm</li>
+        <li><strong>Magnesium (Mg):</strong> {{ nutrients.Mg }} ppm</li>
+        <li><strong>Sulfur (S):</strong> {{ nutrients.S }} ppm</li>
+        <li><strong>Micronutrients:</strong> {{ nutrients.Micronutrients|join:", " }}</li>
+    </ul>
+</body>
+</html>

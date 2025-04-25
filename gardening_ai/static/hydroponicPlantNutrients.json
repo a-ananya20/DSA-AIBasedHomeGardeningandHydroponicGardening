@@ -1,0 +1,461 @@
+[
+  {
+    "plant": "Lettuce",
+    "method": ["NFT", "DWC", "Wick"],
+    "sunlight": ["full", "partial"],
+    "stage": "Flowering",
+    "nutrients": {
+      "N": 250,
+      "P": 80,
+      "K": 350,
+      "Ca": 200,
+      "Mg": 70,
+      "S": 90,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+
+  {
+    "plant": "Spinach",
+    "method": ["NFT", "DWC"],
+    "sunlight": ["partial"],
+    "stage": "Leaf",
+    "nutrients": {
+      "N": 180,
+      "P": 70,
+      "K": 250,
+      "Ca": 150,
+      "Mg": 60,
+      "S": 80,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Tomato",
+    "method": ["DWC", "Drip", "Vertical"],
+    "sunlight": ["full"],
+    "stage": "Flowering",
+    "nutrients": {
+      "N": 250,
+      "P": 80,
+      "K": 350,
+      "Ca": 200,
+      "Mg": 70,
+      "S": 90,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Cucumbers",
+    "method": ["DWC", "NFT", "Drip"],
+    "sunlight": ["full"],
+    "stage": "Flowering",
+    "nutrients": {
+      "N": 200,
+      "P": 60,
+      "K": 280,
+      "Ca": 180,
+      "Mg": 65,
+      "S": 85,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Basil",
+    "method": ["NFT", "DWC", "Wick"],
+    "sunlight": ["full"],
+    "stage": "Leaf",
+    "nutrients": {
+      "N": 180,
+      "P": 60,
+      "K": 220,
+      "Ca": 120,
+      "Mg": 55,
+      "S": 75,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Kale",
+    "method": ["NFT", "DWC"],
+    "sunlight": ["full", "partial"],
+    "stage": "Leaf",
+    "nutrients": {
+      "N": 200,
+      "P": 70,
+      "K": 250,
+      "Ca": 150,
+      "Mg": 60,
+      "S": 80,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Peppers (Bell, Chili)",
+    "method": ["DWC", "Drip", "Vertical"],
+    "sunlight": ["full"],
+    "stage": "Flowering",
+    "nutrients": {
+      "N": 240,
+      "P": 90,
+      "K": 350,
+      "Ca": 200,
+      "Mg": 70,
+      "S": 90,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Strawberries",
+    "method": ["Vertical", "Drip"],
+    "sunlight": ["full"],
+    "stage": "Flowering",
+    "nutrients": {
+      "N": 180,
+      "P": 70,
+      "K": 250,
+      "Ca": 150,
+      "Mg": 60,
+      "S": 80,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+  {
+    "plant": "Swiss Chard",
+    "method": ["NFT", "DWC"],
+    "sunlight": ["full", "partial"],
+    "stage": "Leaf",
+    "nutrients": {
+      "N": 200,
+      "P": 80,
+      "K": 300,
+      "Ca": 160,
+      "Mg": 70,
+      "S": 90,
+      "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+    }
+  },
+
+    {
+      "plant": "Arugula",
+      "method": ["NFT", "DWC", "Wick"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 180,
+        "P": 70,
+        "K": 240,
+        "Ca": 140,
+        "Mg": 60,
+        "S": 80,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Watercress",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 190,
+        "P": 75,
+        "K": 270,
+        "Ca": 150,
+        "Mg": 65,
+        "S": 85,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Pak Choi (Bok Choy)",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 210,
+        "P": 80,
+        "K": 300,
+        "Ca": 170,
+        "Mg": 70,
+        "S": 90,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Mustard Greens",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 210,
+        "P": 80,
+        "K": 310,
+        "Ca": 170,
+        "Mg": 70,
+        "S": 90,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Microgreens (e.g., Sunflower, Pea Shoots)",
+      "method": ["NFT", "Wick"],
+      "sunlight": ["full"],
+      "stage": "Seedling",
+      "nutrients": {
+        "N": 150,
+        "P": 50,
+        "K": 200,
+        "Ca": 100,
+        "Mg": 40,
+        "S": 60,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Radishes",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["full", "partial"],
+      "stage": "Root",
+      "nutrients": {
+        "N": 160,
+        "P": 60,
+        "K": 220,
+        "Ca": 130,
+        "Mg": 50,
+        "S": 70,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Celery",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 200,
+        "P": 75,
+        "K": 250,
+        "Ca": 150,
+        "Mg": 60,
+        "S": 80,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Carrots",
+      "method": ["NFT", "DWC"],
+      "sunlight": ["full"],
+      "stage": "Root",
+      "nutrients": {
+        "N": 160,
+        "P": 55,
+        "K": 220,
+        "Ca": 130,
+        "Mg": 50,
+        "S": 70,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Coriander (Cilantro)",
+      "method": ["NFT", "DWC", "Wick"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 180,
+        "P": 70,
+        "K": 240,
+        "Ca": 140,
+        "Mg": 60,
+        "S": 80,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+    {
+      "plant": "Mint",
+      "method": ["NFT", "Wick"],
+      "sunlight": ["full", "partial"],
+      "stage": "Leaf",
+      "nutrients": {
+        "N": 190,
+        "P": 70,
+        "K": 250,
+        "Ca": 150,
+        "Mg": 60,
+        "S": 80,
+        "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+      }
+    },
+  
+      {
+        "plant": "Chives",
+        "method": ["NFT", "Wick"],
+        "sunlight": ["full", "partial"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 180,
+          "P": 60,
+          "K": 230,
+          "Ca": 140,
+          "Mg": 55,
+          "S": 75,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Lemongrass",
+        "method": ["NFT", "DWC"],
+        "sunlight": ["full"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 210,
+          "P": 80,
+          "K": 280,
+          "Ca": 160,
+          "Mg": 70,
+          "S": 90,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Oregano",
+        "method": ["NFT", "Wick"],
+        "sunlight": ["full", "partial"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 180,
+          "P": 70,
+          "K": 240,
+          "Ca": 140,
+          "Mg": 60,
+          "S": 80,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Thyme",
+        "method": ["NFT", "Wick"],
+        "sunlight": ["full", "partial"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 170,
+          "P": 65,
+          "K": 220,
+          "Ca": 130,
+          "Mg": 55,
+          "S": 75,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Leeks",
+        "method": ["NFT", "DWC"],
+        "sunlight": ["full"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 200,
+          "P": 75,
+          "K": 260,
+          "Ca": 150,
+          "Mg": 65,
+          "S": 85,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Sweet Potatoes (Leaves)",
+        "method": ["DWC", "Vertical"],
+        "sunlight": ["full"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 220,
+          "P": 80,
+          "K": 300,
+          "Ca": 170,
+          "Mg": 75,
+          "S": 95,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Broccoli",
+        "method": ["DWC", "NFT"],
+        "sunlight": ["full"],
+        "stage": "Flowering",
+        "nutrients": {
+          "N": 250,
+          "P": 85,
+          "K": 330,
+          "Ca": 180,
+          "Mg": 70,
+          "S": 100,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Cauliflower",
+        "method": ["DWC", "NFT"],
+        "sunlight": ["full"],
+        "stage": "Flowering",
+        "nutrients": {
+          "N": 240,
+          "P": 80,
+          "K": 320,
+          "Ca": 175,
+          "Mg": 68,
+          "S": 95,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Zucchini (Courgette)",
+        "method": ["DWC", "Drip", "Vertical"],
+        "sunlight": ["full"],
+        "stage": "Flowering",
+        "nutrients": {
+          "N": 240,
+          "P": 85,
+          "K": 330,
+          "Ca": 185,
+          "Mg": 72,
+          "S": 100,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      },
+      {
+        "plant": "Chard",
+        "method": ["NFT", "DWC"],
+        "sunlight": ["full", "partial"],
+        "stage": "Leaf",
+        "nutrients": {
+          "N": 200,
+          "P": 75,
+          "K": 280,
+          "Ca": 160,
+          "Mg": 65,
+          "S": 85,
+          "Micronutrients": ["Fe", "Zn", "Mn", "B"]
+        }
+      }
+    
+    
+  
+  
+
+
+
+
+
+
+
+
+
+
+  
+]
+
+            
+          
+          
+      
+
