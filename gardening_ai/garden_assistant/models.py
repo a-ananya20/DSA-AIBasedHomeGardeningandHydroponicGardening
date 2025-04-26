@@ -42,3 +42,14 @@ class Plant(models.Model):
         return self.name
 
 
+from django.db import models
+
+class HarvestItem(models.Model):
+    item_name = models.CharField(max_length=100)
+    price_per_kg = models.DecimalField(max_digits=6, decimal_places=2)
+    total_quantity = models.DecimalField(max_digits=6, decimal_places=2)
+    seller_name = models.CharField(max_length=100)
+    seller_phone = models.CharField(max_length=15)
+
+    def __str__(self):
+        return f"{self.item_name} by {self.seller_name}"

@@ -73,6 +73,7 @@ def hydroponic_layout_result(request):
     reason = "Great for testing hydroponics with minimal space and light requirements."
     tip = "Ideal when you're unsure about sunlight or working with tight/indoor spaces."
     guide_url = '/hydroponic-layout/?method=dwc'
+    image_url = '/static/images/Deep-Water-Culture-System - Copy.jpg'
 
     # Recommendation Table Logic
     if space == 'balcony':
@@ -82,22 +83,26 @@ def hydroponic_layout_result(request):
                 reason = 'Uses vertical space well and takes full advantage of sunlight.'
                 tip = 'Perfect for growing herbs or leafy greens in a compact sunny balcony.'
                 guide_url = '/hydroponic-layout/?method=vertical'
+                image_url = '/static/images/Vertical-Gardenhydroponic-.jpg'
             elif sunlight == 'partial':
                 methods = ['Vertical Hydroponics']
                 reason = 'Compact setup with potential artificial lighting.'
                 tip = 'Add grow lights for better yield if sunlight is inconsistent.'
                 guide_url = '/hydroponic-layout/?method=vertical'
+                image_url = '/static/images/Vertical-Gardenhydroponic-.jpg'
         elif size == 'medium':
             if sunlight == 'full sun':
                 methods = ['NFT']
                 reason = 'Can accommodate longer NFT pipes with vertical setups.'
                 tip = 'Great for leafy greens and herbs.'
                 guide_url = '/hydroponic-layout/?method=nft'
+                image_url = '/static/images/NFT-Hydroponic-System - Copy.png'
             elif sunlight == 'low':
                 methods = ['DWC']
                 reason = 'Low light? Use vertical shelves with LED lights.'
                 tip = 'Grow herbs or lettuce using grow lights.'
                 guide_url = '/hydroponic-layout/?method=dwc'
+                image_url = '/static/images/Deep-Water-Culture-System - Copy.jpg'
 
     elif space == 'rooftop':
         if sunlight == 'full sun':
@@ -105,11 +110,13 @@ def hydroponic_layout_result(request):
             reason = 'Plenty of sunlight and space makes it perfect for all systems.'
             tip = 'Try tomatoes, cucumbers, or leafy greens.'
             guide_url = '/hydroponic-layout/?method=drip'
+            image_url = '/static/images/Drip-System - Copy.jpg'
         elif sunlight == 'partial':
             methods = ['Drip System']
             reason = 'Partial shade? Drip and NFT still work with minor modifications.'
             tip = 'Cover with netting or partial shade cloth.'
             guide_url = '/hydroponic-layout/?method=drip'
+            image_url = '/static/images/Drip-System - Copy.jpg'
 
     elif space == 'kitchen corner':
         if size in ['small', 'medium'] and sunlight in ['low', 'partial']:
@@ -117,6 +124,7 @@ def hydroponic_layout_result(request):
             reason = 'Indoors: DWC fits on shelves, vertical saves space.'
             tip = 'Perfect for growing kitchen herbs with LED lighting.'
             guide_url = '/hydroponic-layout/?method=dwc'
+            image_url = '/static/images/Deep-Water-Culture-System - Copy.jpg'
 
     elif space == 'indoor room':
         if size in ['small', 'medium'] and sunlight == 'low':
@@ -124,11 +132,13 @@ def hydroponic_layout_result(request):
             reason = 'Great for small indoor rooms with artificial lighting.'
             tip = 'Lettuce, basil, and other herbs grow well indoors.'
             guide_url = '/hydroponic-layout/?method=dwc'
+            image_url = '/static/images/Deep-Water-Culture-System - Copy.jpg'
         elif size == 'large' and sunlight in ['low', 'partial']:
-            methods = [ 'NFT']
+            methods = ['NFT']
             reason = 'Larger space allows rows of NFT channels, add grow lights.'
             tip = 'Install full-spectrum lights for best yield indoors.'
             guide_url = '/hydroponic-layout/?method=nft'
+            image_url = '/static/images/NFT-Hydroponic-System - Copy.png'
 
     elif space == 'backyard':
         if size in ['medium', 'large']:
@@ -137,22 +147,26 @@ def hydroponic_layout_result(request):
                 reason = 'Great for larger fruits and vegetables.'
                 tip = 'Use for tomatoes, cucumbers, and more.'
                 guide_url = '/hydroponic-layout/?method=drip'
+                image_url = '/static/images/Drip-System - Copy.jpg'
             elif sunlight == 'partial':
-                methods = [ 'NFT']
+                methods = ['NFT']
                 reason = 'Ideal for partial shade crops like lettuce and spinach.'
                 tip = 'Add shade netting if needed.'
                 guide_url = '/hydroponic-layout/?method=nft'
+                image_url = '/static/images/NFT-Hydroponic-System - Copy.png'
             elif sunlight == 'low':
                 methods = ['DWC']
                 reason = 'Use grow lights and shade-tolerant crops.'
                 tip = 'Lettuces, herbs, and spinach do well here.'
                 guide_url = '/hydroponic-layout/?method=dwc'
+                image_url = '/static/images/Deep-Water-Culture-System - Copy.jpg'
 
     return render(request, 'hydroponic-layout-result.html', {
         'methods': methods,
         'reason': reason,
         'tip': tip,
-        'guide_url': guide_url
+        'guide_url': guide_url,
+        'image_url': image_url
     })
 
 
@@ -764,3 +778,45 @@ def chat_message(request):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render, redirect
+from .models import HarvestItem
+from .forms import HarvestItemForm
+
+
+
+def sell_item(request):
+    if request.method == 'POST':
+        form = HarvestItemForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('buy_items')  # redirect to buyers list after submission
+    else:
+        form = HarvestItemForm()
+    return render(request, 'sell_items_list.html', {'form': form})
+
+def buy_items(request):
+    items = HarvestItem.objects.all()
+    return render(request, 'buy_items_list.html', {'items': items})

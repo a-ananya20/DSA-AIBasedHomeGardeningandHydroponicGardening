@@ -1,0 +1,23 @@
+<!-- harvest_hub_home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Harvest Hub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="p-5">
+    <button onclick="goBack()" style="margin-bottom: 20px; padding: 10px 20px; background-color: #a5d6a7; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; color: #1b5e20; cursor: pointer;">⬅️ Back</button>
+    <div class="container text-center">
+        <h1 class="mb-4">Welcome to Harvest Hub</h1>
+        <a href="{% url 'sell_item' %}" class="btn btn-success btn-lg m-3">Sell Home-Grown Items</a>
+        <a href="{% url 'buy_items' %}" class="btn btn-primary btn-lg m-3">Buy Home-Grown Items</a>
+    </div>
+</body>
+<script>
+    function goBack() {
+  window.location.href = "/home/";
+   // replace with the correct URL path to your garden type page
+}
+</script>
+</html>

@@ -6,6 +6,11 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('home/', views.home, name='home'),
     path('harvesthub/', views.harvesthub, name='harvesthub'),
+     path('sell/', views.sell_item, name='sell_item'),
+    path('buy/', views.buy_items, name='buy_items'),
+
+
+
     path('home-gardening/', views.home_gardening, name='home_gardening'),
 
 

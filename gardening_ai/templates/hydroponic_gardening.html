@@ -16,15 +16,20 @@
 
     /* Body Styling */
     body {
-      background: linear-gradient(to right, #d9ebf3, #c7e2f0); /* Lighter blue gradient */
-      color: #24acf6; /* Deep blue for text */
-      padding: 20px;
+      background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+      color: #24acf6;
+      padding-top: 80px; /* Add top padding so content is not hidden behind fixed navbar */
     }
 
     /* Navbar */
     nav.navbar {
-      background-color: #24acf6 !important; /* Updated to bright blue navbar */
+      background-color: #24acf6 !important;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
     }
 
     .navbar-brand {
@@ -34,13 +39,13 @@
 
     /* Heading and Paragraph */
     .container h1 {
-      color: #24acf6; /* Bright blue for headings */
+      color: #24acf6;
       font-weight: bold;
       margin-top: 30px;
     }
 
     .container p {
-      color: #24acf6; /* Bright blue for text */
+      color: #24acf6;
       font-size: 16px;
       margin-bottom: 40px;
     }
@@ -50,10 +55,10 @@
       border-radius: 15px;
       padding: 20px;
       transition: transform 0.3s, box-shadow 0.3s;
-      background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+      background-color: rgba(255, 255, 255, 0.8);
       border: none;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      backdrop-filter: blur(10px); /* Blurring effect for a water-like feel */
+      backdrop-filter: blur(10px);
     }
 
     .feature-card:hover {
@@ -62,17 +67,17 @@
     }
 
     .card-title {
-      color: #0288d1; /* Bright blue for card titles */
+      color: #0288d1;
       font-weight: 600;
     }
 
     .card-text {
-      color: #01579b; /* Deep blue for card text */
+      color: #01579b;
     }
 
     /* Themed Buttons */
     .feature-card a.btn {
-      background: linear-gradient(to right, #81d4fa, #4fc3f7); /* Water blue gradient */
+      background: linear-gradient(to right, #81d4fa, #4fc3f7);
       color: white;
       border: none;
       border-radius: 12px;
@@ -91,7 +96,7 @@
 
     /* Card Shadows for Water Effect */
     .card-body {
-      background: rgba(255, 255, 255, 0.7); /* Subtle water-like effect */
+      background: rgba(255, 255, 255, 0.7);
     }
   </style>
 </head>
@@ -100,7 +105,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="hydroponic_gardening.html">💧 Hydroponic Assistant</a>
+      <a class="navbar-brand" href="/home/">💧 Hydroponic Assistant</a>
     </div>
   </nav>
 
@@ -134,9 +139,9 @@
       <div class="col-md-6">
         <div class="card feature-card">
           <div class="card-body">
-            <h4 class="card-title">🦠 Plant Disease Detection</h4>
-            <p class="card-text">Upload images to detect plant diseases using AI.</p>
-            <a href="/plant-info" class="btn">Detect</a>
+            <h4 class="card-title">🥦 Plant Nutrients Info</h4>
+            <p class="card-text">Select plant & method to see required nutrients for healthy growth.</p>
+            <a href="/plant-info" class="btn">View Nutrients</a> <!-- Updated link -->
           </div>
         </div>
       </div>

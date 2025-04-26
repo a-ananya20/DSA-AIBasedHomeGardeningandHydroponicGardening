@@ -107,11 +107,61 @@
                 font-size: 1rem;
             }
         }
+
+        .back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button-container button {
+  padding: 10px 20px;
+  background-color: #a5d6a7;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1b5e20;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button-container button:hover {
+  background-color: #81c784;
+  transform: translateY(-2px);
+}
+ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+ul li {
+    background-color: #ffffff;
+    padding: 8px 14px;
+    font-size: 1.1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+ul li:hover {
+    background-color: #e8f5e9;
+    cursor: default;
+}
+
+
     </style>
 </head>
 
 <body>
-    <h2>🌱 Get Planting Recommendations</h2>
+    <div class="back-button-container">
+        <button onclick="goBack()">Back</button>
+      </div>
+    <h2>🌱 Get Planting Recommendations 🌱</h2>
 
     <form method="POST">
         {% csrf_token %}
@@ -163,19 +213,7 @@
 
     <hr>
 
-    {% if selected_soil %}
-        <p><strong>Selected Soil Type:</strong> {{ selected_soil }}</p>
-    {% endif %}
-    {% if selected_season %}
-        <p><strong>Selected Season:</strong> {{ selected_season }}</p>
-    {% endif %}
-    {% if selected_garden %}
-        <p><strong>Selected Garden Type:</strong> {{ selected_garden }}</p>
-    {% endif %}
-    {% if sunlight %}
-        <p><strong>Selected Sunlight Preferred:</strong> {{ sunlight }}</p>
-    {% endif %}
-
+   
     {% if plants %}
         <h3>Recommended Plants:</h3>
         <ul>
@@ -187,4 +225,10 @@
         <p>No plants found for the selected soil, garden type, and season.</p>
     {% endif %}
 </body>
+<script>
+    function goBack() {
+  window.location.href = "/home-gardening/";
+   // replace with the correct URL path to your garden type page
+}
+</script>
 </html>

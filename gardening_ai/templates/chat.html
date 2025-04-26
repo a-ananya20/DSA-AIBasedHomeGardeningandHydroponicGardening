@@ -24,6 +24,7 @@
         
 </head>
 <body>
+    <button onclick="goBack()" style="margin-bottom: 20px; padding: 10px 20px; background-color: #a5d6a7; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; color: #1b5e20; cursor: pointer;">⬅️ Back</button>
     <div class="chat-app">
         <!-- Chat Header -->
         <div class="chat-header">
@@ -64,4 +65,10 @@
     <script src="{% static 'js/chat.js' %}"></script>
      
 </body>
+<script>
+    function goBack() {
+  window.location.href = "/hydroponic-gardening/";
+   // replace with the correct URL path to your garden type page
+}
+</script>
 </html>

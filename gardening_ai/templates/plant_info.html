@@ -6,6 +6,7 @@
     <title>{{ plant.plant }} - Hydroponic Info</title>
 </head>
 <body>
+    <button onclick="goBack()" style="margin-bottom: 20px; padding: 10px 20px; background-color: #a5d6a7; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; color: #1b5e20; cursor: pointer;">⬅️ Back</button>
     <h1>{{ plant.plant }} - {{ method }} Method</h1>
     
     <p><strong>Growth Stage:</strong> {{ plant.stage }}</p>
@@ -21,4 +22,10 @@
         <li><strong>Micronutrients:</strong> {{ nutrients.Micronutrients|join:", " }}</li>
     </ul>
 </body>
+<script>
+    function goBack() {
+  window.location.href = "/hydroponic-gardening/";
+   // replace with the correct URL path to your garden type page
+}
+</script>
 </html>

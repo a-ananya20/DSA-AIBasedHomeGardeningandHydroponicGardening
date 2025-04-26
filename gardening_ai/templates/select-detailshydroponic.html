@@ -5,72 +5,146 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Space Details</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background: #f4f9f9;
+    /* Base Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+
+    body {
+      padding: 30px;
+      background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Themed Button (Back and Submit) */
+    .themed-btn {
+      align-self: flex-start;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #81d4fa, #4fc3f7);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .themed-btn:hover {
+      background-color: #4fc3f7;
+      transform: translateY(-4px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Centered Submit Button Specific */
+    .submit-btn {
+      margin-top: 25px;
+      width: 100%;
+    }
+
+    /* Heading */
     h2 {
+      color: #24acf6;;
+      font-size: 2rem;
+      margin-bottom: 30px;
       text-align: center;
     }
+
+    /* Form Container */
     .form-container {
       max-width: 400px;
-      margin: auto;
-      background: white;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.8);
       padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      backdrop-filter: blur(10px);
     }
+
+    #selected-space {
+      color: #24acf6;;
+      font-weight: bold;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
+    }
+
+    /* Labels */
     label {
       display: block;
       margin: 15px 0 5px;
       font-weight: bold;
+      color: #24acf6;;
+      text-align: left;
     }
+
+    /* Inputs */
     select, input[type="radio"] {
       margin-top: 5px;
     }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #0288d1;
+      border-radius: 5px;
+      background-color: #e3f2fd;
+      color: #24acf6;;
+      font-weight: bold;
+    }
+
     .radio-group {
       margin-top: 10px;
+      text-align: left;
     }
+
     .radio-group label {
       font-weight: normal;
-    }
-    .submit-btn {
-      margin-top: 25px;
-      background-color: #2e937a;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      display: block;
-      width: 100%;
+      color: #0288d1;
     }
   </style>
 </head>
 <body>
+
+  <button class="themed-btn" onclick="goBack()"> Back</button>
+
   <h2>Tell Us About Your Space</h2>
+
   <div class="form-container">
     <p id="selected-space"></p>
 
     <label for="dimension">Select Dimensions:</label>
     <select id="dimension">
-      <option value="Small">< 3 ft (Small)</option>
+      <option value="Small">&lt; 3 ft (Small)</option>
       <option value="Medium">3–6 ft (Medium)</option>
-      <option value="Large">> 6 ft (Large)</option>
+      <option value="Large">&gt; 6 ft (Large)</option>
     </select>
 
     <label>Sunlight Availability:</label>
     <div class="radio-group">
       <label><input type="radio" name="sunlight" value="Full Sun"> Full Sun (6+ hrs)</label><br>
       <label><input type="radio" name="sunlight" value="Partial"> Partial (3–6 hrs)</label><br>
-      <label><input type="radio" name="sunlight" value="Low"> Low (< 3 hrs)</label>
+      <label><input type="radio" name="sunlight" value="Low"> Low (&lt; 3 hrs)</label>
     </div>
 
-    <button class="submit-btn" onclick="submitForm()">Submit</button>
+    <button class="themed-btn submit-btn" onclick="submitForm()">Submit</button>
   </div>
 
   <script>
+     function goBack() {
+      window.location.href = "/select-type-hydroponic/";
+    }
+
     // Read URL param and display selected space
     const params = new URLSearchParams(window.location.search);
     const spaceType = params.get("space");
@@ -84,14 +158,13 @@
         return;
       }
 
-     
-
       const sunlightValue = sunlight.value;
 
-    // Redirect to layout result page with parameters
-    const redirectUrl = `/hydroponic-layout-result/?space=${encodeURIComponent(spaceType)}&size=${encodeURIComponent(dimension)}&sunlight=${encodeURIComponent(sunlightValue)}`;
-    window.location.href = redirectUrl;
+      // Redirect to layout result page with parameters
+      const redirectUrl = `/hydroponic-layout-result/?space=${encodeURIComponent(spaceType)}&size=${encodeURIComponent(dimension)}&sunlight=${encodeURIComponent(sunlightValue)}`;
+      window.location.href = redirectUrl;
     }
   </script>
+
 </body>
 </html>

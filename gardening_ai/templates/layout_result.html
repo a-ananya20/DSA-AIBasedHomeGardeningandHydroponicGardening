@@ -169,10 +169,37 @@
         width: 90%;
       }
     }
+    .back-button-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.back-button-container button {
+  padding: 10px 20px;
+  background-color: #a5d6a7;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #1b5e20;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.back-button-container button:hover {
+  background-color: #81c784;
+  transform: translateY(-2px);
+}
+
   </style>
 </head>
 
 <body>
+  <div class="back-button-container">
+    <button onclick="goBack()">Back</button>
+  </div>
   <!-- Heading Based on Garden Type -->
   <h2>{{ garden_type|title }} Layout</h2>
   <p class="info-line">🌿 Click on any plant below to view detailed information.</p>
@@ -254,6 +281,11 @@
 
 
   <script>
+
+function goBack() {
+  window.location.href = "/garden/";
+   // replace with the correct URL path to your garden type page
+}
     // Plant metadata dictionary
     const plantData = {
       "🌼": { name: "Marigold", water: "Low", duration: "2 months", plant: "March", harvest: "May" },

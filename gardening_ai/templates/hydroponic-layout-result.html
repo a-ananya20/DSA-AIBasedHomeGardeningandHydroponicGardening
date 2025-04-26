@@ -4,41 +4,126 @@
   <meta charset="UTF-8">
   <title>Hydroponic Recommendation</title>
   <style>
-    body { font-family: Arial; padding: 20px; background-color: #f0f9ff; }
-    .result-box {
-      background: white; padding: 30px; border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
-      max-width: 600px; margin: auto;
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .result-box h2 { color: #4caf50; }
-    .tip-box {
-      margin-top: 20px;
-      background: #e8f5e9;
-      padding: 15px;
-      border-left: 5px solid #4caf50;
-      border-radius: 8px;
+
+    body {
+      background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .guide-link {
-      margin-top: 20px;
-      display: inline-block;
-      padding: 10px 15px;
-      background: #2196f3;
+
+    .themed-btn {
+      align-self: flex-start;
+      margin-bottom: 20px;
+      background: linear-gradient(to right, #81d4fa, #4fc3f7);
       color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
       text-decoration: none;
-      border-radius: 8px;
     }
+
+    .themed-btn:hover {
+      background-color: #4fc3f7;
+      transform: translateY(-4px);
+      box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    .result-box {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .result-box h2 {
+      color: #24acf6;
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .method-image {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 15px;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .method-image:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+.tip{
+  color: #1976d2;
+}
+    .tip-box {
+      margin-top: 25px;
+      background: #e1f5fe;
+      padding: 15px;
+      border-left: 5px solid #24acf6;
+      border-radius: 10px;
+      color: #1976d2;
+      font-size: 1rem;
+    }
+    .method-image {
+  width: 100%;
+  max-width: 400px;
+  height: 250px; /* Fixed height */
+  object-fit: contain; /* Important: show entire image without cutting */
+  background-color: #ffffff; /* Optional: gives white background if image is smaller */
+  border-radius: 15px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+
   </style>
 </head>
 <body>
+
+  <button class="themed-btn" onclick="goBack()"> Back</button>
+
   <div class="result-box">
     <h2>✅ Your Best Hydroponic Match: {{ methods }}</h2>
-    <p><strong>Why this method?</strong> {{ reason }}</p>
+<p class="tip">click on the image to know more</p>
+    <a href="{{ guide_url }}" target="_blank">
+      <img src="{{ image_url }}" alt="{{ methods }}" class="method-image">
+    </a>
 
     <div class="tip-box">
       <strong>💡 Tip:</strong> {{ tip }}
     </div>
 
-    <a class="guide-link" href="{{ guide_url }}">🔍 Learn more about {{ method }}</a>
+    <br><br>
+    <a class="themed-btn" href="/plant_recommendation/">🌱 Plant Recommendations</a>
   </div>
+
+<script>
+  function goBack() {
+    window.location.href = "/select-type-hydroponic/";
+  }
+</script>
+
 </body>
 </html>

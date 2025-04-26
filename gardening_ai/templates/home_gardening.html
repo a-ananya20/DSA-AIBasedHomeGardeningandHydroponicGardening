@@ -16,34 +16,41 @@
 
     /* Body Styling */
     body {
-      background: linear-gradient(to right, #cfffe1, #c4f0c5);
-      /* background: linear-gradient(to right, #e0f7e9, #c8e6c9); */
+      background: linear-gradient(to right, #e0f7e9, #c8e6c9);
       color: #2e7d32;
       padding: 20px;
     }
 
     /* Navbar */
     nav.navbar {
-     
-      background-color: #2e7d32 !important;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: #388e3c !important; /* Green */
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 
     .navbar-brand {
-     
       font-weight: bold;
       color: white !important;
     }
 
+    /* Add padding-top to body to prevent content being hidden behind navbar */
+    body {
+      padding-top: 80px;
+    }
+
     /* Heading and Paragraph */
     .container h1 {
-      color: #1b5e20;
+      color: #2e7d32;
       font-weight: bold;
       margin-top: 30px;
     }
 
     .container p {
-      color: #33691e;
+      color: #388e3c;
       font-size: 16px;
       margin-bottom: 40px;
     }
@@ -53,9 +60,10 @@
       border-radius: 15px;
       padding: 20px;
       transition: transform 0.3s, box-shadow 0.3s;
-      background-color: #a5d6a7; /* updated theme-matching color */
+      background-color: rgba(238, 250, 240, 0.85); /* Slightly glassy white */
       border: none;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(8px);
     }
 
     .feature-card:hover {
@@ -64,18 +72,18 @@
     }
 
     .card-title {
-      color: #1b5e20;
+      color: #43a047; /* Vibrant green for title */
       font-weight: 600;
     }
 
     .card-text {
-      color: #2e7d32;
+      color: #2e7d32; /* Deep green for text */
     }
 
     /* Themed Buttons */
     .feature-card a.btn {
-      background: linear-gradient(to right, #e0f7e9, #c8e6c9);
-      color: #1b5e20;
+      background: linear-gradient(to right, #81c784, #66bb6a);
+      color: white;
       border: none;
       border-radius: 12px;
       padding: 12px 18px;
@@ -86,9 +94,14 @@
     }
 
     .feature-card a.btn:hover {
-      background-color: #81c784;
+      background-color: #66bb6a;
       transform: translateY(-4px);
       box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Optional: card-body subtle glass look */
+    .card-body {
+      background: rgba(255, 255, 255, 0.7);
     }
   </style>
 </head>
@@ -97,7 +110,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="home_gardening.html">🌿 Gardening Assistant</a>
+      <a class="navbar-brand" href="/home/">🌿 Gardening Assistant</a>
     </div>
   </nav>
 

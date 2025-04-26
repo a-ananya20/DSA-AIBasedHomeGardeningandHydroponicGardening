@@ -1,42 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Recommendations for Hydroponics</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Recommendations for Hydroponics</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2);
+      color: #01579b;
+    }
+
+    button {
+      margin-bottom: 20px;
+      padding: 10px 20px;
+      background-color: #4fc3f7;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #01579b;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #29b6f6;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0277bd;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      max-width: 450px;
+      margin: 0 auto 30px;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    select, button[type="submit"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #81d4fa;
+    }
+
+    button[type="submit"] {
+      background-color: #4fc3f7;
+      color: #01579b;
+      border: none;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #29b6f6;
+    }
+
+    /* Card Styling */
+    .card {
+      width: 450px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    /* Image inside card */
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.05);
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: #e1f5fe;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      font-weight: 500;
+      color: #0277bd;
+    }
+
+    p {
+      text-align: center;
+      font-style: italic;
+      color: #0288d1;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Hydroponic Plant Recommendations</h1>
+  <button onclick="goBack()"> Back</button>
 
-    <form method="GET" action="{% url 'plant_recommendation' %}">
-        <label for="method">Hydroponic Method:</label>
-        <select id="method" name="method">
-            <option value="NFT" {% if method == 'NFT' %}selected{% endif %}>NFT</option>
-            <option value="DWC" {% if method == 'DWC' %}selected{% endif %}>DWC</option>
-            <option value="VERTICAL" {% if method == 'VERTICAL' %}selected{% endif %}>Vertical</option>
-            <option value="DRIP" {% if method == 'DRIP' %}selected{% endif %}>Drip</option>
-        </select>
+  <h1>Hydroponic Plant Recommendations</h1>
 
-        <label for="sunlight">Sunlight:</label>
-        <select id="sunlight" name="sunlight">
-            <option value="full" {% if sunlight == 'full' %}selected{% endif %}>Full Sun</option>
-            <option value="partial" {% if sunlight == 'partial' %}selected{% endif %}>Partial Sun</option>
-            
-        </select>
+  <form method="GET" action="{% url 'plant_recommendation' %}">
+    <label for="method">Hydroponic Method:</label>
+    <select id="method" name="method">
+      <option value="NFT" {% if method == 'NFT' %}selected{% endif %}>NFT</option>
+      <option value="DWC" {% if method == 'DWC' %}selected{% endif %}>DWC</option>
+      <option value="VERTICAL" {% if method == 'VERTICAL' %}selected{% endif %}>Vertical</option>
+      <option value="DRIP" {% if method == 'DRIP' %}selected{% endif %}>Drip</option>
+    </select>
 
-        <button type="submit">Get Recommendations</button>
-    </form>
+    <label for="sunlight">Sunlight:</label>
+    <select id="sunlight" name="sunlight">
+      <option value="full" {% if sunlight == 'full' %}selected{% endif %}>Full Sun</option>
+      <option value="partial" {% if sunlight == 'partial' %}selected{% endif %}>Partial Sun</option>
+    </select>
 
-    <h2>Recommended Plants for {{ method|capfirst }} Method and {{ sunlight|capfirst }} Sunlight:</h2>
-    
-    {% if recommended_plants %}
-        <ul>
+    <button type="submit">Get Recommendations</button>
+  </form>
+
+  <h2>Recommended Plants for {{ method|capfirst }} Method and {{ sunlight|capfirst }} Sunlight:</h2>
+
+  {% if recommended_plants %}
+    <div class="card">
+      <ul>
         {% for plant in recommended_plants %}
-            <li>{{ plant }}</li>
+          <li>{{ plant }}</li>
         {% endfor %}
-        </ul>
-    {% else %}
-        <p>No recommendations available for the selected options.</p>
-    {% endif %}
+      </ul>
+    </div>
+  {% else %}
+    <p>No recommendations available for the selected options.</p>
+  {% endif %}
+
+  <script>
+    function goBack() {
+      window.location.href = "/hydroponic-gardening/";
+    }
+  </script>
 </body>
 </html>
