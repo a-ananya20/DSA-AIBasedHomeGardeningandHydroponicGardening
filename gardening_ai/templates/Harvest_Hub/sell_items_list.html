@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sell Item - Harvest Hub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Body Styling */
+        body {
+    background: linear-gradient(to right, #FFF9C4, #FFECB3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* So that back button and form are aligned vertically */
+}
+
+
+      
+    /* Form Field Styling */
+    form p {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    /* Text fields (input, textarea, select) Styling */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    textarea,
+    select {
+        background-color: #FFF3E0; /* Light warm background */
+        border: 1px solid #FFB74D; /* Light orange border */
+        border-radius: 8px;
+        padding: 10px 15px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #333333; /* Dark text for readability */
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: #F57C00; /* Highlight border on focus */
+        background-color: #FFE0B2; /* Slightly deeper warm color */
+    }
+
+
+
+       
+
+        /* Back Button Styling (updated same as Harvest Hub page) */
+        .btn-back {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #F57C00;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+        .btn-back:hover {
+            background-color: #FF9800;
+        }
+
+        /* Form Container Styling (updated with gradient) */
+        .form-container {
+            background: linear-gradient(145deg, #FFECB3, #FFE082);
+            border-radius: 15px;
+            padding: 40px 30px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            margin: 0 auto;
+            /* margin-top: 30px; */
+            animation: fadeIn 1s ease;
+        }
+
+        /* Heading Styling */
+        h2 {
+            color: #F57C00;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Submit Button Styling */
+        .btn-submit {
+            background-color: #FFB74D;
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-submit:hover {
+            background-color: #FF9800;
+        }
+
+        /* Form Field Styling */
+        form p {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+   
+
+    <!-- Back Button -->
+    <a href="{% url 'harvesthub' %}" class="btn-back">Back</a>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <h2>Enter Item Details to Sell</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,76 +1,65 @@
+<!-- gardening_assistant_home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Gardening Assistant</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
     body {
-      background-color: #FFF3E0;
+      background-color: #FFF3E0; /* Light creamy background */
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-
     .navbar {
-      background-color: #81c784;
+      background-color: #81c784; /* Fresh green navbar */
     }
-
     .navbar-brand {
       font-size: 1.5rem;
-      color: white !important;
       font-weight: bold;
-      
+      color: white !important;
     }
-
     .container {
       text-align: center;
       margin-top: 50px;
       padding: 0 20px;
     }
-
     h1 {
-      color: #81c784;
+      color: #81c784; /* Soft green heading */
       font-size: 2.2rem;
       margin-bottom: 20px;
     }
-
     p {
       font-size: 1.1rem;
-      color: #4E342E;
+      color: #4E342E; /* Deep brown text */
     }
-
     .option-card {
+      background-color: #FFFDE7; /* Light yellow card background */
       border-radius: 12px;
       padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s ease-in-out;
-      background-color: #FFFDE7;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+      border: 2px solid #fbf7c6;
       margin-bottom: 30px;
     }
-
     .option-card:hover {
       transform: scale(1.03);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
     }
-
     .home-heading {
-      color: #2E8B57;
+      color: #2E8B57; /* Forest green */
     }
-
     .hydro-heading {
-      color: #1E90FF;
+      color: #1E90FF; /* Bright blue */
     }
-
     .harvest-heading {
-      color: #F57C00;
+      color: #F57C00; /* Harvest orange */
     }
-
     .card-text {
       font-size: 1rem;
       color: #4E342E;
       margin-bottom: 15px;
     }
-
     .btn {
       font-size: 1rem;
       padding: 10px 20px;
@@ -78,43 +67,33 @@
       font-weight: bold;
       color: white;
     }
-
     .btn-success {
       background-color: #2E8B57;
     }
-
     .btn-success:hover {
       background-color: #177841;
     }
-
     .btn-primary {
       background-color: #1E90FF;
     }
-
     .btn-primary:hover {
       background-color: #1565C0;
     }
-
     .btn-orange {
       background-color: #F57C00;
     }
-
     .btn-orange:hover {
       background-color: #E65100;
-      color: white !important; /* Prevents turning black */
+      color: white !important;
     }
-
     @media (max-width: 768px) {
       .card-title {
         font-size: 1.3rem;
       }
-
-      .card-text {
+      .card-text, .btn {
         font-size: 0.95rem;
       }
-
       .btn {
-        font-size: 0.95rem;
         padding: 8px 16px;
       }
     }
@@ -123,7 +102,7 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar ">
+  <nav class="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Gardening Assistant</a>
     </div>
@@ -135,7 +114,7 @@
     <p>Select an option to get started:</p>
 
     <div class="row mt-4">
-      <!-- Home Gardening -->
+      <!-- Home Gardening Option -->
       <div class="col-md-6 mb-4">
         <div class="card option-card">
           <div class="card-body">
@@ -146,7 +125,7 @@
         </div>
       </div>
 
-      <!-- Hydroponic Farming -->
+      <!-- Hydroponic Farming Option -->
       <div class="col-md-6 mb-4">
         <div class="card option-card">
           <div class="card-body">
@@ -158,7 +137,7 @@
       </div>
     </div>
 
-    <!-- HarvestHub in next row, centered -->
+    <!-- Harvest Hub Option -->
     <div class="row mt-4">
       <div class="col-md-6 offset-md-3">
         <div class="card option-card">

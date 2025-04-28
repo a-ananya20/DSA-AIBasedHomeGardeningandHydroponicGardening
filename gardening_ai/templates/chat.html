@@ -6,25 +6,221 @@
     <title>Hydroponic Garden Assistant</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
     <style>
+        /* Reset and base styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 20px;
+            color: #24acf6;
+            position: relative;
+        }
+        
+        /* Back Button */
+        button[onclick="goBack()"] {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background-color: #81d4fa;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        
+        button[onclick="goBack()"]:hover {
+            background-color: #4fc3f7;
+            transform: translateY(-2px);
+        }
+        
+        /* Main chat app container */
+        .chat-app {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 600px;
+            margin-top: 100px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        
+        /* Chat header */
+        .chat-header {
+            background-color: #24acf6;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+        
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .avatar {
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+        
+        .header-text h1 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+        
+        .header-text p {
+            font-size: 0.9rem;
+        }
+        
+        /* Chat messages area */
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #f0f9ff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        /* Chat bubbles */
+        .bot-message, .user-message {
+            max-width: 70%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            word-wrap: break-word;
+        }
+        
+        .bot-message {
+            background-color: #e1f5fe;
+            align-self: flex-start;
+            border-bottom-left-radius: 0;
+        }
+        
+        .user-message {
+            background-color: #d1eafe;
+            align-self: flex-end;
+            border-bottom-right-radius: 0;
+        }
+        
+        /* Chat input area */
+        .chat-input-area {
+            padding: 15px;
+            background-color: #e0f7fa;
+            border-top: 1px solid #b2ebf2;
+        }
+        
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 5px 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        #user-input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border-radius: 30px;
+        }
+        
+        .input-wrapper button {
+            background-color: #24acf6;
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .input-wrapper button:hover {
+            background-color: #1e88e5;
+        }
+        
+        .input-wrapper button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        /* Updated Option button styles */
         .option-btn {
             margin: 5px;
             padding: 8px 12px;
-            background-color: #e0f7fa;
+            background-color: #24acf6; 
+             /* 💙 Changed to blue */
+            color: white;
             border: none;
             border-radius: 20px;
             cursor: pointer;
             font-weight: bold;
+            transition: background-color 0.3s ease;
         }
+        
         .option-btn:hover {
-            background-color: #b2ebf2;
+            background-color: #1e88e5; /* 💙 Darker blue on hover */
         }
+
+        .back-button-container {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+      }
+  
+      .back-button-container button {
+          background: linear-gradient(to right, #81d4fa, #4fc3f7);
+          border: none;
+          border-radius: 8px;
+          padding: 10px 20px;
+          font-size: 1rem;
+          font-weight: bold;
+          color: white;
+          cursor: pointer;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+  
+      .back-button-container button:hover {
+          background-color: #4fc3f7;
+          transform: translateY(-2px);
+      }
         </style>
+        
         
 </head>
 <body>
-    <button onclick="goBack()" style="margin-bottom: 20px; padding: 10px 20px; background-color: #a5d6a7; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; color: #1b5e20; cursor: pointer;">⬅️ Back</button>
+    <div class="back-button-container">
+        <button onclick="goBack()">Back</button>
+      </div>
     <div class="chat-app">
         <!-- Chat Header -->
         <div class="chat-header">
@@ -62,13 +258,140 @@
             </form>
         </div>
     </div>
-    <script src="{% static 'js/chat.js' %}"></script>
+    <!-- <script src="{% static 'js/chat.js' %}"></script> -->
      
 </body>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const chatForm = document.getElementById('chat-form');
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    let currentNode = 'start';
+
+    // Function to create a message element
+    function createMessageElement(message, isBot = false) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add(isBot ? 'bot-message' : 'user-message');
+    messageDiv.textContent = message;
+    return messageDiv;
+}
+
+
+    // Function to add a message to the chat
+    function addMessage(message, isBot = false) {
+        const messageElement = createMessageElement(message, isBot);
+        chatMessages.appendChild(messageElement);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to show typing indicator
+    function showTypingIndicator() {
+        const indicator = document.createElement('div');
+        indicator.classList.add('typing-indicator');
+        indicator.id = 'typing-indicator';
+        for (let i = 0; i < 3; i++) {
+            const dot = document.createElement('span');
+            indicator.appendChild(dot);
+        }
+        chatMessages.appendChild(indicator);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Function to remove typing indicator
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typing-indicator');
+        if (indicator) {
+            indicator.remove();
+        }
+    }
+
+    // Function to display bot message and options
+    function displayBotMessage(response, options = {}) {
+        addMessage(response, true);
+
+        if (options && Object.keys(options).length > 0) {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options-buttons';
+
+            Object.entries(options).forEach(([text, key]) => {
+                const button = document.createElement('button');
+                button.innerText = text;
+                button.className = 'option-btn';
+                button.onclick = () => {
+                    addMessage(text, false);
+                    sendMessage(text);
+                };
+                optionsDiv.appendChild(button);
+            });
+
+            chatMessages.appendChild(optionsDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    }
+
+    // Function to send message to the server
+    async function sendMessage(message) {
+        showTypingIndicator();
+
+        try {
+            const response = await fetch('/chat-message/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({ message: message, current_node: currentNode })
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            removeTypingIndicator();
+            displayBotMessage(data.response, data.options);
+            currentNode = data.current_node;
+        } catch (error) {
+            console.error('Error:', error);
+            removeTypingIndicator();
+            addMessage('Sorry, I encountered an error. Please try again.', true);
+        }
+    }
+
+    // Handle form submission
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, false);
+        userInput.value = '';
+        sendMessage(message);
+    });
+
+    // Add initial greeting
+    setTimeout(() => {
+        displayBotMessage("Hello! I'm your hydroponic gardening assistant. How can I help you today?", {});
+    }, 500);
+});
+
     function goBack() {
   window.location.href = "/hydroponic-gardening/";
    // replace with the correct URL path to your garden type page
 }
+
+// For bot reply
+const botMessage = document.createElement('div');
+botMessage.classList.add('bot-message');
+botMessage.innerText = "Hello, how can I help?";
+chatMessages.appendChild(botMessage);
+
+// For user message
+const userMessage = document.createElement('div');
+userMessage.classList.add('user-message');
+userMessage.innerText = "Tell me about hydroponics!";
+chatMessages.appendChild(userMessage);
+
 </script>
 </html>

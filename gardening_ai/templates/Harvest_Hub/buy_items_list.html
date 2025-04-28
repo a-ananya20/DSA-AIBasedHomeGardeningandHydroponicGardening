@@ -1,0 +1,98 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Items - Harvest Hub</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* Body Styling */
+        body {
+            background: linear-gradient(to right, #FFF9C4, #FFECB3); /* Matching gradient from Sell Item */
+            padding: 5%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+        }
+
+        /* Heading Styling */
+        h2 {
+            color: #F57C00; /* Matching dark orange from Sell Item */
+            font-weight: bold;
+            margin-bottom: 40px;
+        }
+
+        /* Card Styling (with Gradient) */
+        .card {
+            background: linear-gradient(145deg, #FFECB3, #FFE082); /* Gradient applied to individual cards */
+            border: none; /* Removed border to let the gradient stand out */
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        /* Card Title Styling */
+        .card-title {
+            color: #F57C00; /* Matching orange color for consistency */
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Card Body Text */
+        .card-body p {
+            color: #F57C00; /* Matching text color for description */
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        /* Back Button Styling */
+        .btn-back {
+            background-color: #F57C00; /* Orange matching theme */
+            border: none;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .btn-back:hover {
+            background-color: #FF9800; /* Hover effect to a slightly darker orange */
+        }
+
+        /* No Items Available Message */
+        .no-items {
+            text-align: center;
+            color: #5d4037; /* Dark brown for a softer tone */
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-start">
+            <a href="{% url 'harvesthub' %}" class="btn btn-back">Back</a>
+        </div>
+        <h2>Available Home-Grown Items</h2>
+        <div class="row">
+            {% for item in items %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.item_name }}</h5>
+                        <p><strong>Price/kg:</strong> ₹{{ item.price_per_kg }}</p>
+                        <p><strong>Available Quantity:</strong> {{ item.total_quantity }} kg</p>
+                        <p><strong>Seller:</strong> {{ item.seller_name }}</p>
+                        <p><strong>Contact:</strong> {{ item.seller_phone }}</p>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-items">No items available for sale right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

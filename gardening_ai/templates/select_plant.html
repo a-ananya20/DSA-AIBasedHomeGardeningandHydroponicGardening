@@ -4,9 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hydroponic Plant Info</title>
+    <style>
+        /* Base Reset and Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+            color: #1565c0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            color: #24acf6;
+            margin-bottom: 20px;
+        }
+
+        /* Back Button */
+        .back-button-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .back-button-container button {
+            background: linear-gradient(to right, #81d4fa, #4fc3f7);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-button-container button:hover {
+            background-color: #4fc3f7;
+            transform: translateY(-2px);
+        }
+
+        /* Form Styles */
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: block;
+            color: #1976d2;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            border: 1px solid #1976d2;
+            border-radius: 8px;
+        }
+
+        button {
+            background: linear-gradient(to right, #81d4fa, #4fc3f7);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #4fc3f7;
+            transform: translateY(-4px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Recommendations Section */
+        hr {
+            margin: 30px 0;
+            border: 1px solid #81d4fa;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #1976d2;
+            text-align: center;
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        ul li {
+            background-color: #ffffff;
+            padding: 8px 14px;
+            font-size: 1.1rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            white-space: nowrap;
+        }
+
+        ul li:hover {
+            background-color: #e8f5e9;
+            cursor: default;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            label, select, button {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <button onclick="goBack()" style="margin-bottom: 20px; padding: 10px 20px; background-color: #a5d6a7; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; color: #1b5e20; cursor: pointer;">⬅️ Back</button>
+    <div class="back-button-container">
+        <button onclick="goBack()"> Back</button>
+    </div>
+
     <h1>Select Hydroponic Plant</h1>
     
     <form method="post">
@@ -25,7 +163,6 @@
             <option value="" disabled selected>Select a method</option>
             <option value="NFT">NFT</option>
             <option value="DWC">DWC</option>
-            <option value="Wick">Wick</option>
             <option value="Drip">Drip</option>
             <option value="Vertical">Vertical</option>
         </select>
@@ -39,8 +176,7 @@
 </body>
 <script>
     function goBack() {
-  window.location.href = "/hydroponic-gardening/";
-   // replace with the correct URL path to your garden type page
-}
+        window.location.href = "/hydroponic-gardening/"; 
+    }
 </script>
 </html>

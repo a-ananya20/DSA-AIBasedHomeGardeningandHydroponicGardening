@@ -1,120 +1,193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Plant Recommendations for Hydroponics</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 20px;
-      background: linear-gradient(to bottom right, #e0f7fa, #b2ebf2);
-      color: #01579b;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Planting Recommendations</title>
 
-    button {
-      margin-bottom: 20px;
-      padding: 10px 20px;
-      background-color: #4fc3f7;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      color: #01579b;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+    <style>
+      /* Base Reset and Typography */
+      * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+  
+      body {
+          background: linear-gradient(to right, #d9ebf3, #c7e2f0);
+          color: #1565c0;
+          padding: 20px;
+          min-height: 100vh;
+      }
+  
+      h1, h2, h3 {
+          text-align: center;
+          color: #24acf6;
+      }
+  
+      h1 {
+          font-size: 2.2rem;
+          margin-bottom: 20px;
+      }
+  
+      h2 {
+          font-size: 1.8rem;
+          margin-bottom: 30px;
+      }
+  
+      h3 {
+          font-size: 1.6rem;
+          margin-bottom: 20px;
+      }
+  
+      /* Form Styles */
+      form {
+          max-width: 600px;
+          margin: 0 auto;
+          background-color: rgba(255, 255, 255, 0.95);
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+  
+      label {
+          font-size: 1.2rem;
+          margin-bottom: 8px;
+          display: block;
+          color: #1976d2;
+      }
+  
+      select, button {
+          width: 100%;
+          padding: 10px;
+          font-size: 1rem;
+          margin-bottom: 15px;
+          border: 1px solid #1976d2;
+          border-radius: 8px;
+      }
+  
+      button {
+          background: linear-gradient(to right, #81d4fa, #4fc3f7);
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+          border: none;
+      }
+  
+      button:hover {
+          background-color: #4fc3f7;
+          transform: translateY(-4px);
+          box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+      }
+  
+      /* Recommendations Section */
+      hr {
+          margin: 30px 0;
+          border: 1px solid #81d4fa;
+      }
+  
+      p {
+          font-size: 1.1rem;
+          color: #1976d2;
+          text-align: center;
+      }
+/*   
+      ul {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          padding: 0;
+          margin-top: 20px;
+          justify-content: center;
+          
+      }
+  
+      ul li {
+          background-color: rgba(255, 255, 255, 0.9);
+          text-decoration: none;
+          padding: 8px 14px;
+          font-size: 1.1rem;
+          border-radius: 20px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          white-space: nowrap;
+          color: #1565c0;
+      }
+  
+      ul li:hover {
+          background-color: #e3f2fd;
+          cursor: default;
+      } */
 
-    button:hover {
-      background-color: #29b6f6;
-    }
 
-    h1, h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #0277bd;
-    }
+      ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 20px;
+    justify-content: center;
+}
 
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      max-width: 450px;
-      margin: 0 auto 30px;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    select, button[type="submit"] {
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 1px solid #81d4fa;
-    }
-
-    button[type="submit"] {
-      background-color: #4fc3f7;
-      color: #01579b;
-      border: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #29b6f6;
-    }
-
-    /* Card Styling */
-    .card {
-      width: 450px;
-      margin: 20px auto;
-      background-color: #ffffff;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-
-    /* Image inside card */
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover img {
-      transform: scale(1.05);
-    }
-
-    ul {
-      list-style-type: none;
-      padding: 0;
-    }
-
-    li {
-      background-color: #e1f5fe;
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 8px;
-      font-weight: 500;
-      color: #0277bd;
-    }
-
-    p {
-      text-align: center;
-      font-style: italic;
-      color: #0288d1;
-    }
+ul li {
+    background-color: #ffffff;
+    padding: 8px 14px;
+    font-size: 1.1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+ul li:hover {
+    background-color: #e8f5e9;
+    cursor: default;
+}
+  
+      /* Responsive Adjustments */
+      @media (max-width: 600px) {
+          h2 {
+              font-size: 1.5rem;
+          }
+  
+          label, select, button {
+              font-size: 1rem;
+          }
+      }
+  
+      /* Back Button */
+      .back-button-container {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+      }
+  
+      .back-button-container button {
+          background: linear-gradient(to right, #81d4fa, #4fc3f7);
+          border: none;
+          border-radius: 8px;
+          padding: 10px 20px;
+          font-size: 1rem;
+          font-weight: bold;
+          color: white;
+          cursor: pointer;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+          transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+  
+      .back-button-container button:hover {
+          background-color: #4fc3f7;
+          transform: translateY(-2px);
+      }
   </style>
+  
 </head>
 
 <body>
-  <button onclick="goBack()"> Back</button>
+  <div class="back-button-container">
+    <button onclick="goBack()">Back</button>
+  </div>
 
-  <h1>Hydroponic Plant Recommendations</h1>
+  <h1>💧 Hydroponic Plant Recommendations 💧</h1>
 
   <form method="GET" action="{% url 'plant_recommendation' %}">
     <label for="method">Hydroponic Method:</label>
@@ -131,10 +204,12 @@
       <option value="partial" {% if sunlight == 'partial' %}selected{% endif %}>Partial Sun</option>
     </select>
 
-    <button type="submit">Get Recommendations</button>
-  </form>
+    <button type="submit">Get Recommendations</button></form>
 
-  <h2>Recommended Plants for {{ method|capfirst }} Method and {{ sunlight|capfirst }} Sunlight:</h2>
+    <hr>
+
+   
+    <h2>Recommended Plants for {{ method|capfirst }} Method and {{ sunlight|capfirst }} Sunlight:</h2>
 
   {% if recommended_plants %}
     <div class="card">
@@ -148,10 +223,11 @@
     <p>No recommendations available for the selected options.</p>
   {% endif %}
 
-  <script>
-    function goBack() {
-      window.location.href = "/hydroponic-gardening/";
-    }
-  </script>
 </body>
+<script>
+    function goBack() {
+  window.location.href = "/hydroponic-gardening/";
+   // replace with the correct URL path to your garden type page
+}
+</script>
 </html>

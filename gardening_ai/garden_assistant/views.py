@@ -33,7 +33,7 @@ def index(request):
     return render(request, 'index.html')
 
 def harvesthub(request):
-    return render(request, 'harvesthub.html')
+    return render(request, 'Harvest_Hub/harvesthub.html')
 
 
 def home_gardening(request):
@@ -178,56 +178,6 @@ from django.conf import settings
 
 
 
-# Updated function to get plant recommendations based on method and sunlight
-# def get_plant_recommendations_hydroponic(method: str, sunlight: str) -> list:
-#     # Convert method and sunlight to lowercase for consistency
-#     method = method.lower()
-#     sunlight = sunlight.lower()
-
-#     # Load plant data from the JSON file
-#     plants_data = load_plant_data()
-
-#     recommendations = []
-
-#     # Debug: Print the method and sunlight values being processed
-#     print(f"Filtering for Method: {method}, Sunlight: {sunlight}")
-    
-#     # Loop through all plants in the JSON data
-#     for plant in plants_data:
-#         print(f"Checking plant: {plant['plant']} with methods: {plant['method']} and sunlight: {plant.get('sunlight', [])}")
-#         # Check if the plant supports the selected method and sunlight
-#         if method in plant['method'] and sunlight in plant.get('sunlight', []):
-#             recommendations.append(plant['plant'])
-
-#     # Debug: Print final recommendations
-#     print(f"Recommendations: {recommendations}")
-
-#     return recommendations
-
-
-
-
-# # View function to display the recommendations
-# def plant_recommendation_hydroponic(request):
-#     method = request.GET.get('method', 'nft')         # default: nft
-#     sunlight = request.GET.get('sunlight', 'full')    # default: full
-
-#     recommended_plants = get_plant_recommendations_hydroponic(method, sunlight)
-
-#     return render(request, 'plant-recommendations-hydroponic.html', {
-#         'method': method,
-#         'sunlight': sunlight,
-#         'recommended_plants': recommended_plants,
-#     })
-
-
-
-
-
-
-import json
-from django.shortcuts import render
-
 def plant_recommendation(request):
     # Get the selected method and sunlight from the GET parameters
     method = request.GET.get('method', '').lower()
@@ -263,11 +213,6 @@ def plant_recommendation(request):
 
 
 
-
-
-
-import json
-from django.shortcuts import render
 
 # Load the JSON data from the file
 def load_plant_data():
@@ -815,8 +760,8 @@ def sell_item(request):
             return redirect('buy_items')  # redirect to buyers list after submission
     else:
         form = HarvestItemForm()
-    return render(request, 'sell_items_list.html', {'form': form})
+    return render(request, 'Harvest_Hub/sell_items_list.html', {'form': form})
 
 def buy_items(request):
     items = HarvestItem.objects.all()
-    return render(request, 'buy_items_list.html', {'items': items})
+    return render(request, 'Harvest_Hub/buy_items_list.html', {'items': items})
