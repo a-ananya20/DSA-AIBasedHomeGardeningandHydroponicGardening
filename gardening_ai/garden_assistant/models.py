@@ -41,9 +41,6 @@ class Plant(models.Model):
     def __str__(self):
         return self.name
 
-
-from django.db import models
-
 class HarvestItem(models.Model):
     item_name = models.CharField(max_length=100)
     price_per_kg = models.DecimalField(max_digits=6, decimal_places=2)

@@ -40,6 +40,8 @@ chatbot_trie.insert("system", "DWC, NFT, and Ebb & Flow are common hydroponic sy
 chatbot_trie.insert("plant", "Great starter plants include lettuce, basil, and spinach.")
 chatbot_trie.insert("water", "Change nutrient solution every 1-2 weeks and monitor daily.")
 chatbot_trie.insert("problem", "Watch out for root rot, algae, and nutrient imbalance.")
+chatbot_trie.insert("what can i grow in my balcony", "You can grow herbs, leafy greens, and small vegetables using vertical hydroponics or container gardening in your balcony.")
+
 
 # 📊 Graph-based (tree) conversation flow
 conversation_graph = {

@@ -20,6 +20,7 @@ MODEL_DIR = os.path.join(PROJECT_ROOT, 'models')
 MODEL_PATH = os.path.join(MODEL_DIR, 'plant_disease_model.h5')
 
 # Make sure model folder exists
+
 os.makedirs(MODEL_DIR, exist_ok=True)
 
 # Data augmentation for training
