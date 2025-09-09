@@ -80,17 +80,25 @@ WSGI_APPLICATION = 'gardening_ai.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-   
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gardening_db',
-        'USER': 'root',
-        'PASSWORD': 'ananya@12345',
-        'HOST': 'localhost',
-        'PORT': '3307',
+
+import dj_database_url
+
+if os.getenv("RENDER"):  # if deployed on Render
+    DATABASES = {
+        'default': dj_database_url.config(conn_max_age=600)
     }
-}
+else:  # local development
+    DATABASES = {
+   
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'gardening_db',
+            'USER': 'root',
+            'PASSWORD': 'ananya@12345',
+            'HOST': 'localhost',
+            'PORT': '3307',
+        }
+    }
 
 
 
